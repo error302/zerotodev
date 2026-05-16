@@ -1,28 +1,23 @@
 ---
 Task ID: 1
-Agent: Main
-Task: Build Zero to Dev - CS & Cybersecurity Mastery Platform
+Agent: Main Agent
+Task: Expand Zero to Dev content and test the full user flow
 
 Work Log:
-- Initialized fullstack development environment
-- Created comprehensive Prisma schema with 15 models: User, Account, Session, VerificationToken, Phase, Lesson, Exercise, Hint, TestCase, UserProgress, UserExerciseAttempt, Achievement, UserAchievement, HackingLab, LabSession
-- Set up NextAuth.js v4 with credentials provider, JWT strategy, bcrypt password hashing
-- Built registration API with validation (email format, username 3-30 chars, password 6+ chars)
-- Built 8 API routes: auth/register, lessons, lessons/[slug], exercises/[id]/submit, labs, labs/[id]/submit, progress, leaderboard
-- Implemented code execution via Piston API with auto-grading against test cases
-- Implemented SHA-256 flag verification for CTF lab submissions
-- Seeded database with 6 phases, 16 lessons, 23 exercises, 69 hints, 106 test cases, 10 achievements, 6 hacking labs
-- Built full SPA UI with: auth screen, dashboard, lessons list, split-pane lesson detail with Monaco editor, hacking labs browser, lab detail with briefing/setup/tools/flag submission, leaderboard
-- Added skill radar chart (Recharts) to dashboard showing 10 CS/cyber domains
-- Upgraded HackingLab schema with setupMdx, toolsHint, briefingMdx, author fields for local-machine challenge model
-- Updated seed data with rich CTF challenge descriptions following the user's design (no live servers, users work on their own Linux machines)
-- Created skill_radar_preview.html with interactive SVG radar chart
-- Fixed Home icon/function name collision, all lint checks pass
-- App serving HTTP 200 on all routes
+- Checked current project state: 16 lessons, 55 exercises, 23 hacking labs
+- Started dev server and tested all API endpoints (lessons, labs, progress, leaderboard)
+- Identified and fixed lesson detail view bug (stale cache from previous session)
+- Used subagent to expand seed data with 32 new LeetCode-style exercises (+58% increase)
+- Added 12 new CTF hacking labs across phases 3-6 (+52% increase)
+- Reseeded database with expanded content
+- Verified all API endpoints return correct data with new content
+- Took 6 browser screenshots of full user flow (login -> dashboard -> lessons -> lesson detail -> hacking labs -> leaderboard)
+- Build passes clean, ESLint passes clean
 
 Stage Summary:
-- Full-stack learning platform with auth, lessons, exercises, code execution, CTF labs, gamification
-- SHA-256 hashed flag verification for security
-- Challenge system designed for zero-infrastructure-cost (users work on own machines)
-- Skill radar chart for visual progress tracking
-- Demo account: moe@zerotodev.dev / password123
+- Content expanded: 55->87 exercises, 23->35 hacking labs
+- All 6 phases now have substantial content
+- New exercises include LeetCode-style problems: Temperature Converter, String Formatter, Fibonacci Generator, Merge Sorted Arrays, Daily Temperatures, LRU Cache, IP Address Validator, SQL Query Builder, RSA Key Calculator, etc.
+- New labs include: SSH Key Recovery, JWT Algorithm Confusion, Race Condition Exploit, ROP Chain Builder, Advanced Persistent Threat, Crypto Puzzle Box, etc.
+- Full user flow tested and working: register -> login -> browse lessons -> open lesson detail -> view hacking labs -> view leaderboard
+- Screenshots saved to /home/z/my-project/download/

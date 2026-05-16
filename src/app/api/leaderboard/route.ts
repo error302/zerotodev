@@ -32,7 +32,7 @@ export async function GET() {
       completedLessons: user.progress.length,
     }))
 
-    return NextResponse.json({ leaderboard })
+    return NextResponse.json({ users: leaderboard })
   } catch (error) {
     console.error("Leaderboard API error:", error)
     return NextResponse.json(

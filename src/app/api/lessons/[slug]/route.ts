@@ -113,23 +113,25 @@ export async function GET(
     }))
 
     return NextResponse.json({
-      id: lesson.id,
-      title: lesson.title,
-      slug: lesson.slug,
-      description: lesson.description,
-      contentMdx: lesson.contentMdx,
-      order: lesson.order,
-      xpReward: lesson.xpReward,
-      category: lesson.category,
-      phase: {
-        id: lesson.phase.id,
-        number: lesson.phase.number,
-        title: lesson.phase.title,
-        description: lesson.phase.description,
-        icon: lesson.phase.icon,
-      },
-      exercises,
-      progress: userProgress,
+      lesson: {
+        id: lesson.id,
+        title: lesson.title,
+        slug: lesson.slug,
+        description: lesson.description,
+        contentMdx: lesson.contentMdx,
+        order: lesson.order,
+        xpReward: lesson.xpReward,
+        category: lesson.category,
+        phase: {
+          id: lesson.phase.id,
+          number: lesson.phase.number,
+          title: lesson.phase.title,
+          description: lesson.phase.description,
+          icon: lesson.phase.icon,
+        },
+        exercises,
+        progress: userProgress,
+      }
     })
   } catch (error) {
     console.error("Lesson detail API error:", error)
