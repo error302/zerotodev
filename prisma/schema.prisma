@@ -1,0 +1,256 @@
+// Zero to Dev - CS & Cybersecurity Mastery Platform
+// PostgreSQL schema via Prisma ORM
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================
+// AUTH & USERS
+// ============================================================
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  username      String   @unique
+  passwordHash  String
+  avatarUrl     String?
+  xpTotal       Int      @default(100)
+  currentPhase  Int      @default(1)
+  streak        Int      @default(0)
+  lastActiveAt  DateTime @default(now())
+  role          String   @default("student") // student, admin
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  accounts      Account[]
+  sessions      Session[]
+  progress      UserProgress[]
+  attempts      UserExerciseAttempt[]
+  labSessions   LabSession[]
+  achievements  UserAchievement[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ============================================================
+// LEARNING CONTENT
+// ============================================================
+
+model Phase {
+  id          String @id @default(cuid())
+  number      Int    @unique
+  title       String
+  description String
+  icon        String // lucide icon name
+
+  lessons Lesson[]
+}
+
+model Lesson {
+  id          String   @id @default(cuid())
+  phaseId     String
+  title       String
+  slug        String   @unique
+  description String
+  contentMdx  String
+  order       Int
+  xpReward    Int      @default(50)
+  category    String   // "cs" or "cyber"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  phase       Phase    @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+  exercises   Exercise[]
+  progress    UserProgress[]
+
+  @@unique([phaseId, order])
+}
+
+model Exercise {
+  id          String   @id @default(cuid())
+  lessonId    String
+  title       String
+  slug        String   @unique
+  description String
+  starterCode String
+  language    String   @default("python")
+  order       Int
+  xpReward    Int      @default(25)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  hints       Hint[]
+  testCases   TestCase[]
+  attempts    UserExerciseAttempt[]
+
+  @@unique([lessonId, order])
+}
+
+model Hint {
+  id         String @id @default(cuid())
+  exerciseId String
+  level      Int    // 1=Nudge, 2=Approach, 3=Near Answer
+  content    String
+  xpCost     Int    // 5, 10, 20
+
+  exercise   Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+
+  @@unique([exerciseId, level])
+}
+
+model TestCase {
+  id           String  @id @default(cuid())
+  exerciseId   String
+  input        String
+  expectedOutput String
+  isHidden     Boolean @default(false)
+  order        Int
+
+  exercise     Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+}
+
+// ============================================================
+// USER PROGRESS & GAMIFICATION
+// ============================================================
+
+model UserProgress {
+  id          String   @id @default(cuid())
+  userId      String
+  lessonId    String
+  completed   Boolean  @default(false)
+  completedAt DateTime?
+  hintsUsed   Int      @default(0)
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+}
+
+model UserExerciseAttempt {
+  id           String   @id @default(cuid())
+  userId       String
+  exerciseId   String
+  code         String
+  passed       Boolean
+  output       String?
+  attemptNum   Int
+  hintsUsed    Int      @default(0)
+  createdAt    DateTime @default(now())
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exercise     Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, exerciseId, attemptNum])
+}
+
+model Achievement {
+  id          String @id @default(cuid())
+  slug        String @unique
+  title       String
+  description String
+  icon        String
+  xpBonus     Int    @default(0)
+  category    String // "cs", "cyber", "streak", "social"
+
+  userAchievements UserAchievement[]
+}
+
+model UserAchievement {
+  id            String   @id @default(cuid())
+  userId        String
+  achievementId String
+  unlockedAt    DateTime @default(now())
+
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievement  Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, achievementId])
+}
+
+// ============================================================
+// HACKING LABS (CTF)
+// ============================================================
+
+model HackingLab {
+  id              String   @id @default(cuid())
+  title           String
+  slug            String   @unique
+  description     String
+  phase           Int
+  difficulty      String   // "easy", "medium", "hard", "expert"
+  category        String   // "web", "crypto", "forensics", "reversing", "pwn", "encoding", "scripting", "binary"
+  expectedFlag    String
+  setupMdx        String   @default("")  // Setup instructions (markdown)
+  toolsHint       String   @default("")  // Tools needed hint
+  briefingMdx     String   @default("")  // Full briefing/story
+  author          String   @default("Zero to Dev")  // Challenge author
+  labUrl          String?
+  downloadUrl     String?
+  xpReward        Int      @default(100)
+  hintContent     String?
+  solutionUrl     String?
+  order           Int
+  isPublished     Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  sessions        LabSession[]
+}
+
+model LabSession {
+  id          String   @id @default(cuid())
+  userId      String
+  labId       String
+  submittedFlag String?
+  solved      Boolean  @default(false)
+  attempts    Int      @default(0)
+  startedAt   DateTime @default(now())
+  solvedAt    DateTime?
+
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lab         HackingLab @relation(fields: [labId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, labId])
+}
