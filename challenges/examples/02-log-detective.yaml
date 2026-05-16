@@ -1,0 +1,37 @@
+title: "Log Detective"
+slug: "log-detective-community"
+phase: 3
+difficulty: "medium"
+category: "forensics"
+expected_flag: "ZTD{brut3_f0rc3_succ3ss}"
+description: "Analyze web server logs to identify a brute force attack and extract the flag from the successful request."
+briefing: |
+  A web server was attacked last night. You have been given the access log file. Your mission:
+
+  1. Identify which IP address made the most failed login attempts (status 401)
+  2. Find the timestamp of the first successful request (status 200) from that IP
+  3. Extract the flag from the query parameter in that successful request
+
+  The log format is standard Apache Combined Log Format. Look for patterns of repeated failures followed by a success — that is the signature of a brute force attack.
+
+  ## Log Format
+  ```
+  IP - - [timestamp] "METHOD PATH HTTP/version" STATUS SIZE "referer" "user-agent"
+  ```
+
+setup: |
+  # Download the access log
+  wget https://zerotodev.dev/challenges/log-detective/access.log
+
+  # Or use Python to analyze it:
+  # with open("access.log") as f:
+  #     for line in f:
+  #         parts = line.split()
+  #         ip = parts[0]
+  #         status = parts[-4]
+  #         path = parts[6]
+
+tools_hint: "Concepts: log analysis, brute force detection, pattern recognition\nTools: grep, awk, Python, jq\nYou do NOT need: any network access"
+hint: "Use grep to find all 401 responses, then count by IP. The attacker IP will have the most failures. Then search for that IP with status 200 to find the successful request containing the flag."
+xp_reward: 130
+author: "SecurityContributor"

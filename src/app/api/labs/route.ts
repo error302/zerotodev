@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
+import { Prisma } from "@prisma/client"
 
 export async function GET(request: NextRequest) {
   try {
@@ -10,8 +11,8 @@ export async function GET(request: NextRequest) {
     const difficulty = searchParams.get("difficulty")
     const category = searchParams.get("category")
 
-    // Build filter conditions
-    const where: Record<string, unknown> = {
+    // Build filter conditions using proper Prisma type
+    const where: Prisma.HackingLabWhereInput = {
       isPublished: true,
     }
 

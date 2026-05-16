@@ -283,10 +283,56 @@ Now it is your turn — write your first functions in the exercises below!`,
           { input: 'greet("Zero to Dev")', expectedOutput: 'Hello, Zero to Dev!', isHidden: true, order: 5 },
         ],
       },
+      {
+        title: 'Sum of Two Numbers',
+        slug: 'sum-of-two-numbers',
+        description: 'Write a function `add(a, b)` that takes two numbers and returns their sum. For example, `add(3, 5)` returns `8`, `add(-1, 1)` returns `0`.',
+        starterCode: `def add(a, b):
+    # Return the sum of a and b
+    pass`,
+        language: 'python',
+        order: 3,
+        xpReward: 25,
+        hints: [
+          { level: 1, content: 'Simply use the `+` operator to add the two parameters and return the result.', xpCost: 5 },
+          { level: 2, content: 'Your function body should be: `return a + b`', xpCost: 10 },
+          { level: 3, content: 'Complete solution: `def add(a, b): return a + b`', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'add(3, 5)', expectedOutput: '8', isHidden: false, order: 1 },
+          { input: 'add(-1, 1)', expectedOutput: '0', isHidden: false, order: 2 },
+          { input: 'add(0, 0)', expectedOutput: '0', isHidden: true, order: 3 },
+          { input: 'add(100, 200)', expectedOutput: '300', isHidden: true, order: 4 },
+          { input: 'add(-5, -3)', expectedOutput: '-8', isHidden: true, order: 5 },
+        ],
+      },
+      {
+        title: 'Repeat String',
+        slug: 'repeat-string',
+        description: 'Write a function `repeat_string(s, n)` that takes a string `s` and an integer `n`, and returns `s` repeated `n` times. For example, `repeat_string("abc", 3)` returns `"abcabcabc"`. If `n` is 0, return an empty string.',
+        starterCode: `def repeat_string(s, n):
+    # Return s repeated n times
+    pass`,
+        language: 'python',
+        order: 4,
+        xpReward: 25,
+        hints: [
+          { level: 1, content: 'Python supports string multiplication: `"abc" * 3` gives `"abcabcabc"`.', xpCost: 5 },
+          { level: 2, content: 'Your function body should be: `return s * n`', xpCost: 10 },
+          { level: 3, content: 'Complete solution: `def repeat_string(s, n): return s * n`', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'repeat_string("abc", 3)', expectedOutput: 'abcabcabc', isHidden: false, order: 1 },
+          { input: 'repeat_string("hi", 2)', expectedOutput: 'hihi', isHidden: false, order: 2 },
+          { input: 'repeat_string("x", 0)', expectedOutput: '', isHidden: true, order: 3 },
+          { input: 'repeat_string("a", 5)', expectedOutput: 'aaaaa', isHidden: true, order: 4 },
+          { input: 'repeat_string("", 10)', expectedOutput: '', isHidden: true, order: 5 },
+        ],
+      },
     ],
   })
   lessonCount++
-  exerciseCount += 2
+  exerciseCount += 4
 
   // Lesson 1.2: Variables & Data Types
   const lesson1_2 = await createLessonWithExercises(phases[0].id, {
@@ -417,10 +463,56 @@ In the exercises below, you will write a type checker and a string reverser — 
           { input: 'reverse_string("racecar")', expectedOutput: 'racecar', isHidden: true, order: 5 },
         ],
       },
+      {
+        title: 'Even or Odd',
+        slug: 'even-or-odd',
+        description: 'Write a function `is_even(n)` that takes an integer and returns `True` if it is even, `False` if it is odd. For example, `is_even(4)` returns `True`, `is_even(7)` returns `False`.',
+        starterCode: `def is_even(n):
+    # Return True if n is even, False if odd
+    pass`,
+        language: 'python',
+        order: 3,
+        xpReward: 25,
+        hints: [
+          { level: 1, content: 'A number is even if it is divisible by 2 with no remainder. Use the modulo operator `%` to check.', xpCost: 5 },
+          { level: 2, content: 'Return `n % 2 == 0`. This expression is True for even numbers and False for odd numbers.', xpCost: 10 },
+          { level: 3, content: 'Complete solution: `def is_even(n): return n % 2 == 0`', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'is_even(4)', expectedOutput: 'True', isHidden: false, order: 1 },
+          { input: 'is_even(7)', expectedOutput: 'False', isHidden: false, order: 2 },
+          { input: 'is_even(0)', expectedOutput: 'True', isHidden: true, order: 3 },
+          { input: 'is_even(-2)', expectedOutput: 'True', isHidden: true, order: 4 },
+          { input: 'is_even(1)', expectedOutput: 'False', isHidden: true, order: 5 },
+        ],
+      },
+      {
+        title: 'Count Vowels',
+        slug: 'count-vowels',
+        description: 'Write a function `count_vowels(s)` that takes a string and returns the number of vowels (a, e, i, o, u) in it, case-insensitive. For example, `count_vowels("Hello")` returns `2`.',
+        starterCode: `def count_vowels(s):
+    # Return the number of vowels in s (case-insensitive)
+    pass`,
+        language: 'python',
+        order: 4,
+        xpReward: 25,
+        hints: [
+          { level: 1, content: 'Convert the string to lowercase, then iterate through each character and count how many are in the set {"a", "e", "i", "o", "u"}.', xpCost: 5 },
+          { level: 2, content: 'Use a comprehension or loop: `sum(1 for c in s.lower() if c in "aeiou")`', xpCost: 10 },
+          { level: 3, content: 'Complete solution: `def count_vowels(s): return sum(1 for c in s.lower() if c in "aeiou")`', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'count_vowels("Hello")', expectedOutput: '2', isHidden: false, order: 1 },
+          { input: 'count_vowels("AEIOU")', expectedOutput: '5', isHidden: false, order: 2 },
+          { input: 'count_vowels("bcdfg")', expectedOutput: '0', isHidden: true, order: 3 },
+          { input: 'count_vowels("")', expectedOutput: '0', isHidden: true, order: 4 },
+          { input: 'count_vowels("Python is fun")', expectedOutput: '4', isHidden: true, order: 5 },
+        ],
+      },
     ],
   })
   lessonCount++
-  exerciseCount += 2
+  exerciseCount += 4
 
   // Lesson 1.3: Control Flow
   const lesson1_3 = await createLessonWithExercises(phases[0].id, {
@@ -579,10 +671,56 @@ Master these patterns, and you will write both more secure code and better secur
           { input: 'is_palindrome("Madam")', expectedOutput: 'True', isHidden: true, order: 5 },
         ],
       },
+      {
+        title: 'Factorial',
+        slug: 'factorial',
+        description: 'Write a function `factorial(n)` that takes a non-negative integer and returns its factorial. The factorial of n (written n!) is the product of all positive integers less than or equal to n. By convention, `factorial(0)` returns `1`. For example, `factorial(5)` returns `120`.',
+        starterCode: `def factorial(n):
+    # Return n! (n factorial)
+    pass`,
+        language: 'python',
+        order: 3,
+        xpReward: 25,
+        hints: [
+          { level: 1, content: 'Use a loop from 1 to n, multiplying each number into an accumulator. Start with result = 1.', xpCost: 5 },
+          { level: 2, content: 'Initialize `result = 1`, then `for i in range(1, n + 1): result *= i`. Return result.', xpCost: 10 },
+          { level: 3, content: 'Complete: `def factorial(n): result = 1; [result := result * i for i in range(1, n+1)]; return result` — or use math.factorial', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'factorial(5)', expectedOutput: '120', isHidden: false, order: 1 },
+          { input: 'factorial(0)', expectedOutput: '1', isHidden: false, order: 2 },
+          { input: 'factorial(1)', expectedOutput: '1', isHidden: true, order: 3 },
+          { input: 'factorial(3)', expectedOutput: '6', isHidden: true, order: 4 },
+          { input: 'factorial(10)', expectedOutput: '3628800', isHidden: true, order: 5 },
+        ],
+      },
+      {
+        title: 'Collatz Steps',
+        slug: 'collatz-steps',
+        description: 'Write a function `collatz_steps(n)` that takes a positive integer and returns the number of steps to reach 1 using the Collatz sequence: if n is even, divide by 2; if odd, multiply by 3 and add 1. For example, `collatz_steps(6)` returns `8` (6→3→10→5→16→8→4→2→1).',
+        starterCode: `def collatz_steps(n):
+    # Return the number of steps to reach 1
+    pass`,
+        language: 'python',
+        order: 4,
+        xpReward: 30,
+        hints: [
+          { level: 1, content: 'Use a while loop: while n != 1, apply the rule and increment a counter.', xpCost: 5 },
+          { level: 2, content: 'Initialize `steps = 0`. While `n != 1`: if n is even, `n = n // 2`, else `n = 3 * n + 1`. Increment steps each iteration. Return steps.', xpCost: 10 },
+          { level: 3, content: 'Complete: `def collatz_steps(n): s=0; while n!=1: n = n//2 if n%2==0 else 3*n+1; s+=1; return s`', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'collatz_steps(6)', expectedOutput: '8', isHidden: false, order: 1 },
+          { input: 'collatz_steps(1)', expectedOutput: '0', isHidden: false, order: 2 },
+          { input: 'collatz_steps(2)', expectedOutput: '1', isHidden: true, order: 3 },
+          { input: 'collatz_steps(7)', expectedOutput: '16', isHidden: true, order: 4 },
+          { input: 'collatz_steps(27)', expectedOutput: '111', isHidden: true, order: 5 },
+        ],
+      },
     ],
   })
   lessonCount++
-  exerciseCount += 2
+  exerciseCount += 4
 
   // Lesson 1.4: Introduction to Cybersecurity
   const lesson1_4 = await createLessonWithExercises(phases[0].id, {
@@ -691,10 +829,56 @@ In the exercises below, you will implement a Caesar cipher and a password streng
           { input: 'check_password_strength("MyP@ss2024!")', expectedOutput: 'strong', isHidden: true, order: 5 },
         ],
       },
+      {
+        title: 'ROT13 Decoder',
+        slug: 'rot13-decoder',
+        description: 'Write a function `rot13(text)` that takes a string and returns the ROT13 decoded version. ROT13 shifts each letter by 13 positions (wrapping around), preserving case and leaving non-alphabetic characters unchanged. For example, `rot13("Uryyb Jbeyq")` returns `"Hello World"`.',
+        starterCode: `def rot13(text):
+    # Apply ROT13 decoding to text
+    pass`,
+        language: 'python',
+        order: 3,
+        xpReward: 25,
+        hints: [
+          { level: 1, content: 'ROT13 is a special case of Caesar cipher with shift 13. Since the alphabet has 26 letters, encoding and decoding use the same shift of 13.', xpCost: 5 },
+          { level: 2, content: 'For each character c: if c.isalpha(), apply `chr((ord(c) - base + 13) % 26 + base)` where base is ord("A") or ord("a"). Otherwise keep c unchanged.', xpCost: 10 },
+          { level: 3, content: 'Complete: same as caesar_cipher with shift=13, or use `import codecs; codecs.decode(text, "rot_13")`', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'rot13("Uryyb Jbeyq")', expectedOutput: 'Hello World', isHidden: false, order: 1 },
+          { input: 'rot13("Hello World")', expectedOutput: 'Uryyb Jbeyq', isHidden: false, order: 2 },
+          { input: 'rot13("ZTD{fgbel}")', expectedOutput: 'ZTG{story}', isHidden: true, order: 3 },
+          { input: 'rot13("abc123")', expectedOutput: 'nop123', isHidden: true, order: 4 },
+          { input: 'rot13("NOP")', expectedOutput: 'ABC', isHidden: true, order: 5 },
+        ],
+      },
+      {
+        title: 'XOR Cipher',
+        slug: 'xor-cipher',
+        description: 'Write a function `xor_cipher(text, key)` that takes a string `text` and a single-character string `key`, and returns the XOR-encrypted result as a string of space-separated hex values. XOR each character of text with the key character. For example, `xor_cipher("A", "\\x01")` returns `"40"` (since ord("A") ^ ord("\\x01") = 64).',
+        starterCode: `def xor_cipher(text, key):
+    # XOR each character with key and return space-separated hex values
+    pass`,
+        language: 'python',
+        order: 4,
+        xpReward: 30,
+        hints: [
+          { level: 1, content: 'For each character in text, compute `ord(c) ^ ord(key)`, then convert to hex with `format(result, "02x")` or `hex(result)[2:].zfill(2)`.', xpCost: 5 },
+          { level: 2, content: 'Build a list: `[format(ord(c) ^ ord(key), "02x") for c in text]`, then join with spaces: `" ".join(list)`', xpCost: 10 },
+          { level: 3, content: 'Complete: `def xor_cipher(text, key): return " ".join(format(ord(c) ^ ord(key), "02x") for c in text)`', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'xor_cipher("A", "\\x01")', expectedOutput: '40', isHidden: false, order: 1 },
+          { input: 'xor_cipher("AB", "\\x00")', expectedOutput: '41 42', isHidden: false, order: 2 },
+          { input: 'xor_cipher("Hi", "\\xff")', expectedOutput: 'b7 b6', isHidden: true, order: 3 },
+          { input: 'xor_cipher("", "\\x01")', expectedOutput: '', isHidden: true, order: 4 },
+          { input: 'xor_cipher("X", "X")', expectedOutput: '00', isHidden: true, order: 5 },
+        ],
+      },
     ],
   })
   lessonCount++
-  exerciseCount += 2
+  exerciseCount += 4
 
   // ============================================================
   // PHASE 2: DATA STRUCTURES & ALGORITHMS
@@ -836,10 +1020,55 @@ Understanding arrays and strings deeply makes you a better programmer and a more
           { input: 'is_anagram("abc", "cba")', expectedOutput: 'True', isHidden: true, order: 4 },
         ],
       },
+      {
+        title: 'Group Anagrams',
+        slug: 'group-anagrams',
+        description: 'Write a function `group_anagrams(strs)` that takes a list of strings and returns a list of lists, where each inner list contains strings that are anagrams of each other. Group anagrams together, sorted alphabetically within each group, and groups sorted by their first element.',
+        starterCode: `def group_anagrams(strs):
+    # Group strings that are anagrams of each other
+    pass`,
+        language: 'python',
+        order: 3,
+        xpReward: 35,
+        hints: [
+          { level: 1, content: 'Use a dictionary where the key is a sorted tuple of characters from each word. Anagrams will produce the same sorted tuple.', xpCost: 5 },
+          { level: 2, content: 'Create dict `groups = {}`. For each word: `key = tuple(sorted(word))`, append word to `groups[key]`. Then convert values to a list and sort.', xpCost: 10 },
+          { level: 3, content: 'Complete: `def group_anagrams(strs): d={}; [d.setdefault(tuple(sorted(w)),[]).append(w) for w in strs]; return sorted([sorted(g) for g in d.values()], key=lambda x: x[0])`', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'group_anagrams(["eat", "tea", "tan", "ate", "nat", "bat"])', expectedOutput: "[['ate', 'eat', 'tea'], ['bat'], ['nat', 'tan']]", isHidden: false, order: 1 },
+          { input: 'group_anagrams(["a"])', expectedOutput: "[['a']]", isHidden: false, order: 2 },
+          { input: 'group_anagrams(["abc", "bca", "cab", "xyz", "zyx"])', expectedOutput: "[['abc', 'bca', 'cab'], ['xyz', 'zyx']]", isHidden: true, order: 3 },
+          { input: 'group_anagrams([])', expectedOutput: '[]', isHidden: true, order: 4 },
+        ],
+      },
+      {
+        title: 'Longest Common Prefix',
+        slug: 'longest-common-prefix',
+        description: 'Write a function `longest_common_prefix(strs)` that takes a list of strings and returns the longest common prefix string amongst them. If there is no common prefix, return an empty string. For example, `longest_common_prefix(["flower", "flow", "flight"])` returns `"fl"`.',
+        starterCode: `def longest_common_prefix(strs):
+    # Return the longest common prefix among all strings
+    pass`,
+        language: 'python',
+        order: 4,
+        xpReward: 30,
+        hints: [
+          { level: 1, content: 'If the list is empty, return "". Take the first string as reference. Compare each character position across all strings. Stop when a mismatch is found.', xpCost: 5 },
+          { level: 2, content: 'Iterate i from 0 to len(strs[0])-1. For each i, check if all strings have the same character at position i. If not, return strs[0][:i]. If all match, return strs[0][:min_len].', xpCost: 10 },
+          { level: 3, content: 'Alternative: use `os.path.commonprefix(strs)` or sort the list and compare only first and last strings (they share the least common prefix).', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'longest_common_prefix(["flower", "flow", "flight"])', expectedOutput: 'fl', isHidden: false, order: 1 },
+          { input: 'longest_common_prefix(["dog", "racecar", "car"])', expectedOutput: '', isHidden: false, order: 2 },
+          { input: 'longest_common_prefix(["interspecies", "interstellar", "interstate"])', expectedOutput: 'inters', isHidden: true, order: 3 },
+          { input: 'longest_common_prefix(["abc"])', expectedOutput: 'abc', isHidden: true, order: 4 },
+          { input: 'longest_common_prefix([])', expectedOutput: '', isHidden: true, order: 5 },
+        ],
+      },
     ],
   })
   lessonCount++
-  exerciseCount += 2
+  exerciseCount += 4
 
   // Lesson 2.2: Linked Lists & Stacks
   const lesson2_2 = await createLessonWithExercises(phases[1].id, {
@@ -970,10 +1199,73 @@ In security, understanding stacks is critical for **stack-based buffer overflow*
           { input: 'reverse_linked_list([5, 4, 3, 2, 1])', expectedOutput: '[1, 2, 3, 4, 5]', isHidden: true, order: 4 },
         ],
       },
+      {
+        title: 'Min Stack',
+        slug: 'min-stack',
+        description: 'Write a class `MinStack` that supports `push(val)`, `pop()`, `top()`, and `get_min()` — all in O(1) time. Implement it by completing the methods. `top()` returns the top element, `get_min()` returns the minimum element currently in the stack.',
+        starterCode: `class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.mins = []
+
+    def push(self, val):
+        # Push value onto stack, track minimum
+        pass
+
+    def pop(self):
+        # Remove top element
+        pass
+
+    def top(self):
+        # Return top element without removing
+        pass
+
+    def get_min(self):
+        # Return minimum element in the stack
+        pass`,
+        language: 'python',
+        order: 3,
+        xpReward: 35,
+        hints: [
+          { level: 1, content: 'Maintain two stacks: one for values, one for minimums. On push, also push the current minimum to the mins stack. On pop, pop from both stacks.', xpCost: 5 },
+          { level: 2, content: 'push: `self.stack.append(val); self.mins.append(min(val, self.mins[-1] if self.mins else val))`. pop: `self.stack.pop(); self.mins.pop()`. top: `return self.stack[-1]`. get_min: `return self.mins[-1]`.', xpCost: 10 },
+          { level: 3, content: 'Complete: maintain two parallel stacks. The mins stack always has the current minimum at its top, so get_min is O(1).', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 's=MinStack(); s.push(5); s.push(3); s.push(7); str(s.get_min())', expectedOutput: '3', isHidden: false, order: 1 },
+          { input: 's=MinStack(); s.push(5); s.push(3); s.push(7); s.pop(); str(s.get_min())', expectedOutput: '3', isHidden: false, order: 2 },
+          { input: 's=MinStack(); s.push(5); s.push(3); s.pop(); str(s.get_min())', expectedOutput: '5', isHidden: true, order: 3 },
+          { input: 's=MinStack(); s.push(-2); str(s.get_min())', expectedOutput: '-2', isHidden: true, order: 4 },
+          { input: 's=MinStack(); s.push(1); s.push(2); str(s.top())', expectedOutput: '2', isHidden: true, order: 5 },
+        ],
+      },
+      {
+        title: 'Evaluate Postfix',
+        slug: 'evaluate-postfix',
+        description: 'Write a function `eval_postfix(expr)` that takes a string of space-separated tokens (operands and operators +, -, *, /) in postfix notation and returns the integer result. Use integer division for `/`. For example, `eval_postfix("3 4 + 2 *")` returns `14`.',
+        starterCode: `def eval_postfix(expr):
+    # Evaluate postfix expression, return integer result
+    pass`,
+        language: 'python',
+        order: 4,
+        xpReward: 35,
+        hints: [
+          { level: 1, content: 'Use a stack. Split the expression by spaces. For each token: if it is a number, push it; if it is an operator, pop two operands, apply the operator, and push the result.', xpCost: 5 },
+          { level: 2, content: 'Split by spaces. For each token: `if token in "+-*/": b=stack.pop(); a=stack.pop(); stack.push(apply(a,b,token))` else `stack.append(int(token))`. Return stack[0].', xpCost: 10 },
+          { level: 3, content: 'Note: for division, pop the second operand first (it is the divisor). Use `int(a / b)` for integer division with correct truncation toward zero.', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'eval_postfix("3 4 + 2 *")', expectedOutput: '14', isHidden: false, order: 1 },
+          { input: 'eval_postfix("5 1 2 + 4 * + 3 -")', expectedOutput: '14', isHidden: false, order: 2 },
+          { input: 'eval_postfix("2 3 *")', expectedOutput: '6', isHidden: true, order: 3 },
+          { input: 'eval_postfix("10 2 /")', expectedOutput: '5', isHidden: true, order: 4 },
+          { input: 'eval_postfix("4 13 5 / +")', expectedOutput: '6', isHidden: true, order: 5 },
+        ],
+      },
     ],
   })
   lessonCount++
-  exerciseCount += 2
+  exerciseCount += 4
 
   // Lesson 2.3: Trees & Graphs
   const lesson2_3 = await createLessonWithExercises(phases[1].id, {
@@ -1118,10 +1410,57 @@ Trees and graphs are the backbone of both software architecture and security ana
           { input: 'dfs({0: []}, 0)', expectedOutput: '[0]', isHidden: true, order: 4 },
         ],
       },
+      {
+        title: 'BFS Traversal',
+        slug: 'bfs-traversal',
+        description: 'Write a function `bfs(graph, start)` that takes an adjacency list (dict mapping nodes to lists of neighbors) and a start node, and returns a list of nodes visited in BFS order.',
+        starterCode: `from collections import deque
+
+def bfs(graph, start):
+    # Return list of nodes in BFS order
+    pass`,
+        language: 'python',
+        order: 3,
+        xpReward: 30,
+        hints: [
+          { level: 1, content: 'Use a queue (deque). Start by adding the start node. While the queue is not empty, dequeue a node, add it to result, and enqueue all unvisited neighbors.', xpCost: 5 },
+          { level: 2, content: 'Initialize: `visited = set([start]); queue = deque([start]); result = []`. While queue: `node = queue.popleft(); result.append(node); for n in graph.get(node, []): if n not in visited: visited.add(n); queue.append(n)`.', xpCost: 10 },
+          { level: 3, content: 'Complete: use deque for efficient popleft. Track visited set to avoid revisiting nodes. Return result list.', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'bfs({0: [1, 2], 1: [0, 3], 2: [0], 3: [1]}, 0)', expectedOutput: '[0, 1, 2, 3]', isHidden: false, order: 1 },
+          { input: 'bfs({0: [1], 1: [0, 2], 2: [1]}, 0)', expectedOutput: '[0, 1, 2]', isHidden: false, order: 2 },
+          { input: 'bfs({0: [1, 2], 1: [0], 2: [0, 3, 4], 3: [2], 4: [2]}, 0)', expectedOutput: '[0, 1, 2, 3, 4]', isHidden: true, order: 3 },
+          { input: 'bfs({0: []}, 0)', expectedOutput: '[0]', isHidden: true, order: 4 },
+        ],
+      },
+      {
+        title: 'Max Depth of Tree',
+        slug: 'max-depth-of-tree',
+        description: 'Write a function `max_depth(tree)` that takes a nested list representing a tree and returns its maximum depth. Each element is either a leaf (non-list value) or a subtree (list). The depth of a leaf is 1. For example, `max_depth([1, [2, 3], [4, [5, 6]]])` returns `3`.',
+        starterCode: `def max_depth(tree):
+    # Return the maximum depth of the nested list tree
+    pass`,
+        language: 'python',
+        order: 4,
+        xpReward: 30,
+        hints: [
+          { level: 1, content: 'Use recursion. For a list, the depth is 1 + the maximum depth of its elements. For a non-list element, return 1.', xpCost: 5 },
+          { level: 2, content: 'If tree is not a list, return 1. If tree is a list: `return 1 + max(max_depth(item) for item in tree)` (or 1 if empty).', xpCost: 10 },
+          { level: 3, content: 'Complete: `def max_depth(t): return 1 if not isinstance(t, list) else (1 + max((max_depth(x) for x in t), default=0))`', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'max_depth([1, [2, 3], [4, [5, 6]]])', expectedOutput: '3', isHidden: false, order: 1 },
+          { input: 'max_depth([1, 2, 3])', expectedOutput: '2', isHidden: false, order: 2 },
+          { input: 'max_depth(42)', expectedOutput: '1', isHidden: true, order: 3 },
+          { input: 'max_depth([[[1]]])', expectedOutput: '4', isHidden: true, order: 4 },
+          { input: 'max_depth([])', expectedOutput: '1', isHidden: true, order: 5 },
+        ],
+      },
     ],
   })
   lessonCount++
-  exerciseCount += 2
+  exerciseCount += 4
 
   // ============================================================
   // PHASE 3: SYSTEMS & NETWORKS
@@ -1236,10 +1575,55 @@ The operating system is both your shield and your attack surface. Understanding 
           { input: 'round_robin([("P1", 10)], 2)', expectedOutput: "[('P1', 0), ('P1', 2), ('P1', 4), ('P1', 6), ('P1', 8)]", isHidden: true, order: 4 },
         ],
       },
+      {
+        title: 'File Permission Parser',
+        slug: 'file-permission-parser',
+        description: 'Write a function `parse_permissions(perm_string)` that takes a Linux permission string like `"-rwxr-xr--"` and returns a dict with keys `"type"`, `"owner"`, `"group"`, `"others"`. The type is "file" for `-` or "directory" for `d`. Each permission is a string of granted permissions (e.g., `"rwx"`, `"r-x"`, `"r--"`).',
+        starterCode: `def parse_permissions(perm_string):
+    # Parse Linux permission string into structured dict
+    pass`,
+        language: 'python',
+        order: 2,
+        xpReward: 30,
+        hints: [
+          { level: 1, content: 'The first character is the type. The next 3 are owner, next 3 group, next 3 others. Simply slice the string into these segments.', xpCost: 5 },
+          { level: 2, content: 'Return: `{"type": "directory" if perm_string[0]=="d" else "file", "owner": perm_string[1:4], "group": perm_string[4:7], "others": perm_string[7:10]}`', xpCost: 10 },
+          { level: 3, content: 'Complete: slice positions 0, 1:4, 4:7, 7:10 and map the first char to "file" or "directory".', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'parse_permissions("-rwxr-xr--")', expectedOutput: "{'type': 'file', 'owner': 'rwx', 'group': 'r-x', 'others': 'r--'}", isHidden: false, order: 1 },
+          { input: 'parse_permissions("drwxrwxrwx")', expectedOutput: "{'type': 'directory', 'owner': 'rwx', 'group': 'rwx', 'others': 'rwx'}", isHidden: false, order: 2 },
+          { input: 'parse_permissions("-rw-------")', expectedOutput: "{'type': 'file', 'owner': 'rw-', 'group': '---', 'others': '---'}", isHidden: true, order: 3 },
+          { input: 'parse_permissions("-r--r--r--")', expectedOutput: "{'type': 'file', 'owner': 'r--', 'group': 'r--', 'others': 'r--'}", isHidden: true, order: 4 },
+        ],
+      },
+      {
+        title: 'Memory Allocator',
+        slug: 'memory-allocator',
+        description: 'Write a function `first_fit_allocate(memory_blocks, process_sizes)` that simulates first-fit memory allocation. `memory_blocks` is a list of available block sizes. `process_sizes` is a list of process sizes to allocate. Return a list of allocations where each element is the block index allocated to each process, or -1 if no suitable block was found. When a block is allocated, subtract the process size from the block.',
+        starterCode: `def first_fit_allocate(memory_blocks, process_sizes):
+    # Simulate first-fit memory allocation
+    # Return list of block indices (or -1 if unallocated)
+    pass`,
+        language: 'python',
+        order: 3,
+        xpReward: 35,
+        hints: [
+          { level: 1, content: 'Make a copy of memory_blocks. For each process, scan blocks left to right. Find the first block >= process size. Record its index and reduce the block size.', xpCost: 5 },
+          { level: 2, content: 'Copy blocks: `blocks = list(memory_blocks)`. For each process: iterate blocks, find first where `blocks[i] >= size`. If found: `allocations.append(i); blocks[i] -= size`. Else: `allocations.append(-1)`.', xpCost: 10 },
+          { level: 3, content: 'Complete: use a mutable copy of blocks, iterate processes, for each find the first fitting block, reduce remaining space, record index.', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'first_fit_allocate([100, 500, 200, 300, 600], [212, 417, 112, 426])', expectedOutput: '[1, 4, 1, -1]', isHidden: false, order: 1 },
+          { input: 'first_fit_allocate([100, 200], [50, 150])', expectedOutput: '[0, 1]', isHidden: false, order: 2 },
+          { input: 'first_fit_allocate([100], [200])', expectedOutput: '[-1]', isHidden: true, order: 3 },
+          { input: 'first_fit_allocate([300, 200, 400], [150, 250, 50])', expectedOutput: '[0, 2, 0]', isHidden: true, order: 4 },
+        ],
+      },
     ],
   })
   lessonCount++
-  exerciseCount += 1
+  exerciseCount += 3
 
   // Lesson 3.2: Networking Fundamentals
   const lesson3_2 = await createLessonWithExercises(phases[2].id, {
@@ -1357,10 +1741,54 @@ Understanding these protocols at a deep level is what separates script kiddies f
           { input: 'parse_port_scan("3306/tcp open")', expectedOutput: "[{'port': 3306, 'protocol': 'tcp', 'state': 'open'}]", isHidden: true, order: 4 },
         ],
       },
+      {
+        title: 'Subnet Calculator',
+        slug: 'subnet-calculator',
+        description: 'Write a function `network_address(ip, mask)` that takes an IP address string and a subnet mask string (both in dotted decimal like "192.168.1.10" and "255.255.255.0"), and returns the network address as a string. The network address is computed by bitwise AND of the IP and mask octets.',
+        starterCode: `def network_address(ip, mask):
+    # Calculate network address from IP and subnet mask
+    pass`,
+        language: 'python',
+        order: 2,
+        xpReward: 35,
+        hints: [
+          { level: 1, content: 'Split both IP and mask by ".". Convert each octet to int. AND corresponding octets. Join back with ".".', xpCost: 5 },
+          { level: 2, content: '`ip_parts = [int(x) for x in ip.split(".")]`, `mask_parts = [int(x) for x in mask.split(".")]`. Then: `".".join(str(i & m) for i, m in zip(ip_parts, mask_parts))`', xpCost: 10 },
+          { level: 3, content: 'Complete: `def network_address(ip, mask): return ".".join(str(int(a)&int(b)) for a,b in zip(ip.split("."), mask.split(".")))`', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'network_address("192.168.1.10", "255.255.255.0")', expectedOutput: '192.168.1.0', isHidden: false, order: 1 },
+          { input: 'network_address("10.0.0.5", "255.0.0.0")', expectedOutput: '10.0.0.0', isHidden: false, order: 2 },
+          { input: 'network_address("172.16.5.100", "255.255.0.0")', expectedOutput: '172.16.0.0', isHidden: true, order: 3 },
+          { input: 'network_address("192.168.1.255", "255.255.255.0")', expectedOutput: '192.168.1.0', isHidden: true, order: 4 },
+        ],
+      },
+      {
+        title: 'HTTP Request Parser',
+        slug: 'http-request-parser',
+        description: 'Write a function `parse_http_request(request)` that takes an HTTP request string and returns a dict with keys `"method"`, `"path"`, and `"host"`. The first line is the request line (`METHOD PATH HTTP/version`). The `Host` header line contains the host. For example, `parse_http_request("GET /index.html HTTP/1.1\\nHost: example.com")` returns `{"method": "GET", "path": "/index.html", "host": "example.com"}`.',
+        starterCode: `def parse_http_request(request):
+    # Parse HTTP request into method, path, and host
+    pass`,
+        language: 'python',
+        order: 3,
+        xpReward: 35,
+        hints: [
+          { level: 1, content: 'Split the request by newlines. The first line contains method and path (space-separated). Find the line starting with "Host:" and extract the value.', xpCost: 5 },
+          { level: 2, content: 'Parse request line: `parts = lines[0].split()`, method=parts[0], path=parts[1]. Find Host: iterate lines, split by ": ", check if first part is "Host".', xpCost: 10 },
+          { level: 3, content: 'Complete: split by newlines, parse first line for method and path, iterate remaining lines for Host header.', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'parse_http_request("GET /index.html HTTP/1.1\\nHost: example.com")', expectedOutput: "{'method': 'GET', 'path': '/index.html', 'host': 'example.com'}", isHidden: false, order: 1 },
+          { input: 'parse_http_request("POST /api/data HTTP/1.1\\nHost: api.example.com\\nContent-Type: application/json")', expectedOutput: "{'method': 'POST', 'path': '/api/data', 'host': 'api.example.com'}", isHidden: false, order: 2 },
+          { input: 'parse_http_request("DELETE /users/42 HTTP/1.1\\nHost: localhost:3000")', expectedOutput: "{'method': 'DELETE', 'path': '/users/42', 'host': 'localhost:3000'}", isHidden: true, order: 3 },
+          { input: 'parse_http_request("PUT /update HTTP/1.1\\nHost: test.com\\nAuth: Bearer xyz")', expectedOutput: "{'method': 'PUT', 'path': '/update', 'host': 'test.com'}", isHidden: true, order: 4 },
+        ],
+      },
     ],
   })
   lessonCount++
-  exerciseCount += 1
+  exerciseCount += 3
 
   // Lesson 3.3: Linux & Command Line
   const lesson3_3 = await createLessonWithExercises(phases[2].id, {
@@ -1480,10 +1908,55 @@ Master the command line, and you will work faster, investigate deeper, and autom
           { input: 'parse_access_log(["10.0.0.5 - - [d] \\"GET / HTTP/1.1\\" 401 1", "10.0.0.5 - - [d] \\"GET / HTTP/1.1\\" 401 1", "10.0.0.5 - - [d] \\"GET / HTTP/1.1\\" 401 1", "10.0.0.5 - - [d] \\"GET / HTTP/1.1\\" 401 1", "10.0.0.5 - - [d] \\"GET / HTTP/1.1\\" 200 1"])', expectedOutput: "['10.0.0.5']", isHidden: true, order: 3 },
         ],
       },
+      {
+        title: 'Permission Encoder',
+        slug: 'permission-encoder',
+        description: 'Write a function `encode_permissions(owner, group, others)` that takes three strings of permissions (like `"rwx"`, `"r-x"`, `"r--"`) and returns the octal permission number as a string. Each permission string maps to: r=4, w=2, x=1, sum them. For example, `encode_permissions("rwx", "r-x", "r--")` returns `"754"`.',
+        starterCode: `def encode_permissions(owner, group, others):
+    # Convert symbolic permissions to octal notation
+    pass`,
+        language: 'python',
+        order: 2,
+        xpReward: 30,
+        hints: [
+          { level: 1, content: 'For each permission string, sum the values: r=4, w=2, x=1. If a position has "-" it contributes 0. Then concatenate the three digits.', xpCost: 5 },
+          { level: 2, content: 'Define a helper: `def perm_val(p): return (4 if "r" in p else 0) + (2 if "w" in p else 0) + (1 if "x" in p else 0)`. Return `str(perm_val(owner)) + str(perm_val(group)) + str(perm_val(others))`.', xpCost: 10 },
+          { level: 3, content: 'Complete: map each string to its numeric value by checking r/w/x membership, concatenate as string.', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'encode_permissions("rwx", "r-x", "r--")', expectedOutput: '754', isHidden: false, order: 1 },
+          { input: 'encode_permissions("rwx", "rwx", "rwx")', expectedOutput: '777', isHidden: false, order: 2 },
+          { input: 'encode_permissions("rw-", "r--", "r--")', expectedOutput: '644', isHidden: true, order: 3 },
+          { input: 'encode_permissions("rw-", "---", "---")', expectedOutput: '600', isHidden: true, order: 4 },
+          { input: 'encode_permissions("r--", "r--", "---")', expectedOutput: '440', isHidden: true, order: 5 },
+        ],
+      },
+      {
+        title: 'Grep Simulator',
+        slug: 'grep-simulator',
+        description: 'Write a function `simple_grep(lines, pattern)` that takes a list of strings and a pattern string, and returns a list of lines that contain the pattern (case-sensitive). For example, `simple_grep(["hello world", "foo bar", "hello there"], "hello")` returns `["hello world", "hello there"]`.',
+        starterCode: `def simple_grep(lines, pattern):
+    # Return lines containing the pattern
+    pass`,
+        language: 'python',
+        order: 3,
+        xpReward: 25,
+        hints: [
+          { level: 1, content: 'Use a list comprehension to filter lines where `pattern in line`.', xpCost: 5 },
+          { level: 2, content: 'Return `[line for line in lines if pattern in line]`', xpCost: 10 },
+          { level: 3, content: 'Complete: `def simple_grep(lines, pattern): return [line for line in lines if pattern in line]`', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'simple_grep(["hello world", "foo bar", "hello there"], "hello")', expectedOutput: "['hello world', 'hello there']", isHidden: false, order: 1 },
+          { input: 'simple_grep(["abc", "def", "ghi"], "x")', expectedOutput: '[]', isHidden: false, order: 2 },
+          { input: 'simple_grep(["error: disk full", "info: started", "error: timeout"], "error")', expectedOutput: "['error: disk full', 'error: timeout']", isHidden: true, order: 3 },
+          { input: 'simple_grep(["Line1", "line2", "LINE1"], "Line")', expectedOutput: "['Line1', 'LINE1']", isHidden: true, order: 4 },
+        ],
+      },
     ],
   })
   lessonCount++
-  exerciseCount += 1
+  exerciseCount += 3
 
   // ============================================================
   // PHASE 4: WEB SECURITY
@@ -1614,10 +2087,56 @@ SQL injection is the poster child for "easy to prevent, devastating when ignored
           { input: 'detect_sqli("Hello World")', expectedOutput: 'False', isHidden: true, order: 5 },
         ],
       },
+      {
+        title: 'Parameterize Query',
+        slug: 'parameterize-query',
+        description: 'Write a function `parameterize_query(query_template, params)` that takes a SQL query template with `?` placeholders and a list of parameter values, and returns the safe parameterized query string with properly escaped values. String values should be wrapped in single quotes with internal quotes escaped, numeric values left as-is. For example, `parameterize_query("SELECT * FROM users WHERE name = ? AND age = ?", ["Alice", 25])` returns `"SELECT * FROM users WHERE name = \'Alice\' AND age = 25"`.',
+        starterCode: `def parameterize_query(query_template, params):
+    # Replace ? placeholders with properly escaped values
+    pass`,
+        language: 'python',
+        order: 2,
+        xpReward: 35,
+        hints: [
+          { level: 1, content: 'Iterate through params. For each: if it is a string, wrap in single quotes and escape internal single quotes by doubling them. If it is a number, use str(). Replace each ? in order.', xpCost: 5 },
+          { level: 2, content: 'For each param: if isinstance(p, str): val = chr(39) + p.replace(chr(39), chr(39)+chr(39)) + chr(39) else val = str(p). Then replace the first ? with val in the template.', xpCost: 10 },
+          { level: 3, content: 'Complete: iterate params, build escaped values, replace ? placeholders one at a time using str.replace with count=1.', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'parameterize_query("SELECT * FROM users WHERE name = ? AND age = ?", ["Alice", 25])', expectedOutput: "SELECT * FROM users WHERE name = 'Alice' AND age = 25", isHidden: false, order: 1 },
+          { input: 'parameterize_query("SELECT * FROM users WHERE id = ?", [42])', expectedOutput: 'SELECT * FROM users WHERE id = 42', isHidden: false, order: 2 },
+          { input: 'parameterize_query("INSERT INTO logs (msg) VALUES (?)", ["It\'s done"])', expectedOutput: "INSERT INTO logs (msg) VALUES ('It''s done')", isHidden: true, order: 3 },
+          { input: 'parameterize_query("DELETE FROM temp WHERE id = ?", [0])', expectedOutput: 'DELETE FROM temp WHERE id = 0', isHidden: true, order: 4 },
+        ],
+      },
+      {
+        title: 'Input Sanitizer',
+        slug: 'input-sanitizer',
+        description: 'Write a function `sanitize_input(user_input)` that takes a string and returns a sanitized version safe for use in SQL queries. Remove/escape: single quotes (replace with double single quotes), semicolons (remove), and SQL keywords (SELECT, INSERT, UPDATE, DELETE, DROP, EXEC — case-insensitive, remove the whole word). For example, `sanitize_input("Alice; DROP TABLE users")` returns `"Alice  TABLE users"`.',
+        starterCode: `import re
+
+def sanitize_input(user_input):
+    # Sanitize user input for safe SQL use
+    pass`,
+        language: 'python',
+        order: 3,
+        xpReward: 30,
+        hints: [
+          { level: 1, content: 'Step 1: Replace single quotes with double single quotes. Step 2: Remove semicolons. Step 3: Remove SQL keywords (case-insensitive) as whole words using regex with word boundaries.', xpCost: 5 },
+          { level: 2, content: 'Escape quotes: replace single quotes with two single quotes. Remove semicolons: replace ";" with "". Remove keywords: for each SQL keyword, use re.sub with IGNORECASE flag.', xpCost: 10 },
+          { level: 3, content: 'Complete: apply escaping first, then removal of dangerous characters and keywords in sequence.', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'sanitize_input("Alice; DROP TABLE users")', expectedOutput: "Alice  TABLE users", isHidden: false, order: 1 },
+          { input: 'sanitize_input("normal_name")', expectedOutput: 'normal_name', isHidden: false, order: 2 },
+          { input: 'sanitize_input("O\'Brien; DELETE FROM logs")', expectedOutput: "O''Brien  FROM logs", isHidden: true, order: 3 },
+          { input: 'sanitize_input("select * from users")', expectedOutput: ' * from users', isHidden: true, order: 4 },
+        ],
+      },
     ],
   })
   lessonCount++
-  exerciseCount += 1
+  exerciseCount += 3
 
   // Lesson 4.2: XSS & CSRF
   const lesson4_2 = await createLessonWithExercises(phases[3].id, {
@@ -1743,10 +2262,55 @@ Always use a well-tested sanitization library (like DOMPurify on the client side
           { input: 'sanitize_html("<div onclick=\\"evil()\\">Click</div>")', expectedOutput: '<div >Click</div>', isHidden: true, order: 5 },
         ],
       },
+      {
+        title: 'URL Parameter Analyzer',
+        slug: 'url-parameter-analyzer',
+        description: 'Write a function `analyze_url(url)` that takes a URL string and returns a dict with keys `"path"` and `"params"`. The path is everything before the `?`. The params is a dict of query parameter key-value pairs. For example, `analyze_url("https://example.com/search?q=hello&page=2")` returns `{"path": "https://example.com/search", "params": {"q": "hello", "page": "2"}}`.',
+        starterCode: `def analyze_url(url):
+    # Parse URL into path and query parameters
+    pass`,
+        language: 'python',
+        order: 2,
+        xpReward: 30,
+        hints: [
+          { level: 1, content: 'Split the URL on "?"". If no "?", path is the whole URL and params is empty. Otherwise, split the query string on "&" to get key=value pairs.', xpCost: 5 },
+          { level: 2, content: 'Split on "?": parts = url.split("?", 1). path = parts[0]. If len(parts) > 1: parse params by splitting on "&", then each on "=". Build a dict.', xpCost: 10 },
+          { level: 3, content: 'Complete: handle the case where there are no query parameters. For each param, split on "=" and handle missing values.', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'analyze_url("https://example.com/search?q=hello&page=2")', expectedOutput: "{'path': 'https://example.com/search', 'params': {'q': 'hello', 'page': '2'}}", isHidden: false, order: 1 },
+          { input: 'analyze_url("https://example.com/home")', expectedOutput: "{'path': 'https://example.com/home', 'params': {}}", isHidden: false, order: 2 },
+          { input: 'analyze_url("http://site.com/api?key=abc123&format=json")', expectedOutput: "{'path': 'http://site.com/api', 'params': {'key': 'abc123', 'format': 'json'}}", isHidden: true, order: 3 },
+          { input: 'analyze_url("https://x.com/?redirect=https://evil.com")', expectedOutput: "{'path': 'https://x.com/', 'params': {'redirect': 'https://evil.com'}}", isHidden: true, order: 4 },
+        ],
+      },
+      {
+        title: 'CSRF Token Validator',
+        slug: 'csrf-token-validator',
+        description: 'Write a function `validate_csrf(session_token, form_token)` that takes two strings: a CSRF token from the session and one from the form submission. Returns `True` if both tokens are non-empty strings and are exactly equal, `False` otherwise. This simulates the server-side check that prevents CSRF attacks.',
+        starterCode: `def validate_csrf(session_token, form_token):
+    # Validate CSRF token match
+    pass`,
+        language: 'python',
+        order: 3,
+        xpReward: 25,
+        hints: [
+          { level: 1, content: 'Check both tokens are non-empty and equal. An empty or missing token should always fail validation.', xpCost: 5 },
+          { level: 2, content: 'Return `bool(session_token and form_token and session_token == form_token)`. The `and` short-circuits on empty strings.', xpCost: 10 },
+          { level: 3, content: 'Complete: `def validate_csrf(s, f): return bool(s and f and s == f)`', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'validate_csrf("abc123", "abc123")', expectedOutput: 'True', isHidden: false, order: 1 },
+          { input: 'validate_csrf("abc123", "xyz789")', expectedOutput: 'False', isHidden: false, order: 2 },
+          { input: 'validate_csrf("", "abc123")', expectedOutput: 'False', isHidden: true, order: 3 },
+          { input: 'validate_csrf("token", "")', expectedOutput: 'False', isHidden: true, order: 4 },
+          { input: 'validate_csrf("", "")', expectedOutput: 'False', isHidden: true, order: 5 },
+        ],
+      },
     ],
   })
   lessonCount++
-  exerciseCount += 1
+  exerciseCount += 3
 
   // Lesson 4.3: Authentication Flaws
   const lesson4_3 = await createLessonWithExercises(phases[3].id, {
@@ -1868,10 +2432,57 @@ def validate_jwt_structure(token):
           { input: 'validate_jwt_structure("..signature")', expectedOutput: 'False', isHidden: true, order: 5 },
         ],
       },
+      {
+        title: 'JWT Payload Decoder',
+        slug: 'jwt-payload-decoder',
+        description: 'Write a function `decode_jwt_payload(token)` that takes a JWT string, extracts the payload (middle segment), decodes it from Base64URL, and returns the resulting JSON string. Add padding as needed. For example, `decode_jwt_payload("header.eyJ1c2VyIjoiYWxpY2UiLCJyb2xlIjoiYWRtaW4ifQ.signature")` returns `\'{"user":"alice","role":"admin"}\' `.',
+        starterCode: `import base64
+import json
+
+def decode_jwt_payload(token):
+    # Decode and return the JWT payload as a JSON string
+    pass`,
+        language: 'python',
+        order: 2,
+        xpReward: 35,
+        hints: [
+          { level: 1, content: 'Split the token by ".", take the middle segment (index 1). Add Base64 padding: `payload += "=" * (4 - len(payload) % 4)`. Decode with `base64.urlsafe_b64decode()`.', xpCost: 5 },
+          { level: 2, content: 'Steps: `parts = token.split(".")`, `payload = parts[1]`, `payload += "=" * (4 - len(payload) % 4)`, `decoded = base64.urlsafe_b64decode(payload).decode()`, return `decoded`.', xpCost: 10 },
+          { level: 3, content: 'Complete: split, pad, decode with urlsafe_b64decode, return decoded string. Handle the padding edge case when remainder is 0.', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'decode_jwt_payload("header.eyJ1c2VyIjoiYWxpY2UiLCJyb2xlIjoiYWRtaW4ifQ.signature")', expectedOutput: '{"user":"alice","role":"admin"}', isHidden: false, order: 1 },
+          { input: 'decode_jwt_payload("a.eyJpZCI6MX0.c")', expectedOutput: '{"id":1}', isHidden: false, order: 2 },
+          { input: 'decode_jwt_payload("x.eyJmbGFnIjoiWlREe2gzaWQzbl9qc3d9In0.z")', expectedOutput: '{"flag":"ZTD{h3id3n_jsw}"}', isHidden: true, order: 3 },
+          { input: 'decode_jwt_payload("h.eyJleHAiOjE3MDAwMDAwMDB9.s")', expectedOutput: '{"exp":1700000000}', isHidden: true, order: 4 },
+        ],
+      },
+      {
+        title: 'Rate Limiter',
+        slug: 'rate-limiter',
+        description: 'Write a function `check_rate_limit(attempts, max_attempts)` that takes a list of timestamps (floats, seconds since epoch) representing login attempts and an integer `max_attempts`. Return `True` if there are fewer than `max_attempts` attempts in the most recent 60-second window, `False` otherwise. For example, `check_rate_limit([100.0, 101.0, 102.0, 103.0, 104.0], 5)` at current time 160 returns `True` (all within 60s but only 5, equal to limit is still rate-limited).',
+        starterCode: `def check_rate_limit(attempts, max_attempts):
+    # Return True if under rate limit, False if at or over limit
+    pass`,
+        language: 'python',
+        order: 3,
+        xpReward: 30,
+        hints: [
+          { level: 1, content: 'Filter attempts to only those within the last 60 seconds. Count them. If count >= max_attempts, rate limit is hit.', xpCost: 5 },
+          { level: 2, content: 'Use the last timestamp as "now": `now = max(attempts) if attempts else 0`. Count: `recent = sum(1 for t in attempts if now - t < 60)`. Return `recent < max_attempts`.', xpCost: 10 },
+          { level: 3, content: 'Note: this function uses the max timestamp as "now" for deterministic testing. Return `recent < max_attempts`.', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'check_rate_limit([100.0, 101.0, 102.0, 103.0, 104.0], 5)', expectedOutput: 'False', isHidden: false, order: 1 },
+          { input: 'check_rate_limit([100.0, 101.0], 5)', expectedOutput: 'True', isHidden: false, order: 2 },
+          { input: 'check_rate_limit([10.0, 20.0, 100.0], 2)', expectedOutput: 'False', isHidden: true, order: 3 },
+          { input: 'check_rate_limit([1.0, 2.0, 100.0], 3)', expectedOutput: 'True', isHidden: true, order: 4 },
+        ],
+      },
     ],
   })
   lessonCount++
-  exerciseCount += 1
+  exerciseCount += 3
 
   // ============================================================
   // PHASE 5: ADVANCED SECURITY
@@ -2012,10 +2623,54 @@ def verify_hash(data, expected_hash):
           { input: 'verify_hash("password", "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8")', expectedOutput: 'True', isHidden: true, order: 4 },
         ],
       },
+      {
+        title: 'Caesar Brute Force',
+        slug: 'caesar-brute-force',
+        description: 'Write a function `caesar_brute_force(ciphertext, known_plaintext)` that takes a ciphertext string and a known substring that appears in the original plaintext. Try all 26 possible Caesar cipher shifts and return the shift value (0-25) that produces a decryption containing the known plaintext. Return -1 if no shift works. For example, `caesar_brute_force("Khoor", "Hel")` returns `3`.',
+        starterCode: `def caesar_brute_force(ciphertext, known_plaintext):
+    # Try all shifts, return the one that contains known_plaintext
+    pass`,
+        language: 'python',
+        order: 2,
+        xpReward: 35,
+        hints: [
+          { level: 1, content: 'Loop shift from 0 to 25. For each shift, decrypt using the Caesar cipher with that shift. Check if `known_plaintext` appears in the decrypted text. Return the shift that works.', xpCost: 5 },
+          { level: 2, content: 'For each shift, decrypt: for each char c in ciphertext, if alpha: `chr((ord(c) - base - shift) % 26 + base)`. Check if `known_plaintext in decrypted`.', xpCost: 10 },
+          { level: 3, content: 'Complete: iterate 0-25, apply caesar decryption with each shift, check for known plaintext substring, return matching shift or -1.', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'caesar_brute_force("Khoor", "Hel")', expectedOutput: '3', isHidden: false, order: 1 },
+          { input: 'caesar_brute_force("abc", "abc")', expectedOutput: '0', isHidden: false, order: 2 },
+          { input: 'caesar_brute_force("EYI", "ZTD")', expectedOutput: '5', isHidden: true, order: 3 },
+          { input: 'caesar_brute_force("xyz", "notfound")', expectedOutput: '-1', isHidden: true, order: 4 },
+        ],
+      },
+      {
+        title: 'Hash Collision Finder',
+        slug: 'hash-collision-finder',
+        description: 'Write a function `find_collision(words)` that takes a list of strings and returns a list of two words that have the same hash under a simplified hash function. The simplified hash: `sum(ord(c) for c in word) % 256`. Return the first pair found (in order of appearance), or an empty list if no collision exists.',
+        starterCode: `def find_collision(words):
+    # Find two words with the same simplified hash
+    pass`,
+        language: 'python',
+        order: 3,
+        xpReward: 35,
+        hints: [
+          { level: 1, content: 'Compute the simplified hash for each word. Use a dictionary to track which hash maps to which word. When you find a hash that already exists, you found a collision.', xpCost: 5 },
+          { level: 2, content: 'For each word: `h = sum(ord(c) for c in word) % 256`. If `h in seen`: return `[seen[h], word]`. Else `seen[h] = word`. Return `[]` if no collision.', xpCost: 10 },
+          { level: 3, content: 'Complete: use a dict to map hash values to words. Return first collision pair or empty list.', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'find_collision(["ab", "ba"])', expectedOutput: "['ab', 'ba']", isHidden: false, order: 1 },
+          { input: 'find_collision(["abc", "def", "ghi"])', expectedOutput: '[]', isHidden: false, order: 2 },
+          { input: 'find_collision(["ab", "cd", "ba"])', expectedOutput: "['ab', 'ba']", isHidden: true, order: 3 },
+          { input: 'find_collision(["a", "b", "c"])', expectedOutput: '[]', isHidden: true, order: 4 },
+        ],
+      },
     ],
   })
   lessonCount++
-  exerciseCount += 1
+  exerciseCount += 3
 
   // Lesson 5.2: Digital Forensics
   const lesson5_2 = await createLessonWithExercises(phases[4].id, {
@@ -2148,10 +2803,54 @@ Forensics is where cybersecurity meets detective work. Every byte tells a story 
           { input: 'identify_file_type("deadbeef")', expectedOutput: 'Unknown', isHidden: true, order: 5 },
         ],
       },
+      {
+        title: 'Timeline Builder',
+        slug: 'timeline-builder',
+        description: 'Write a function `build_timeline(log_entries)` that takes a list of strings in format `"YYYY-MM-DD HH:MM:SS | message"` and returns them sorted by timestamp (chronological order). For example, `build_timeline(["2024-01-15 10:30:00 | login", "2024-01-15 09:00:00 | startup"])` returns `["2024-01-15 09:00:00 | startup", "2024-01-15 10:30:00 | login"]`.',
+        starterCode: `def build_timeline(log_entries):
+    # Sort log entries chronologically by timestamp
+    pass`,
+        language: 'python',
+        order: 2,
+        xpReward: 30,
+        hints: [
+          { level: 1, content: 'The timestamp is the first 19 characters of each entry (YYYY-MM-DD HH:MM:SS). Since this format sorts lexicographically in chronological order, you can sort by the string itself.', xpCost: 5 },
+          { level: 2, content: 'Simply `return sorted(log_entries)`. The ISO date format ensures lexicographic sort equals chronological sort.', xpCost: 10 },
+          { level: 3, content: 'Complete: `def build_timeline(log_entries): return sorted(log_entries)`', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'build_timeline(["2024-01-15 10:30:00 | login", "2024-01-15 09:00:00 | startup"])', expectedOutput: "['2024-01-15 09:00:00 | startup', '2024-01-15 10:30:00 | login']", isHidden: false, order: 1 },
+          { input: 'build_timeline(["2024-03-01 12:00:00 | b", "2024-01-01 00:00:00 | a", "2024-02-01 06:00:00 | c"])', expectedOutput: "['2024-01-01 00:00:00 | a', '2024-02-01 06:00:00 | c', '2024-03-01 12:00:00 | b']", isHidden: false, order: 2 },
+          { input: 'build_timeline(["2024-01-15 03:14:22 | fail", "2024-01-15 03:14:21 | fail", "2024-01-15 03:14:24 | success"])', expectedOutput: "['2024-01-15 03:14:21 | fail', '2024-01-15 03:14:22 | fail', '2024-01-15 03:14:24 | success']", isHidden: true, order: 3 },
+          { input: 'build_timeline([])', expectedOutput: '[]', isHidden: true, order: 4 },
+        ],
+      },
+      {
+        title: 'Hex Dump Analyzer',
+        slug: 'hex-dump-analyzer',
+        description: 'Write a function `find_in_hex(hex_string, target_ascii)` that takes a hex string (space-separated byte values) and a target ASCII string, and returns `True` if the target string appears in the decoded bytes, `False` otherwise. For example, `find_in_hex("48 65 6c 6c 6f", "Hello")` returns `True`.',
+        starterCode: `def find_in_hex(hex_string, target_ascii):
+    # Check if target ASCII string appears in hex dump
+    pass`,
+        language: 'python',
+        order: 3,
+        xpReward: 30,
+        hints: [
+          { level: 1, content: 'Split the hex string by spaces. Convert each hex byte to a character using `chr(int(byte, 16))`. Join them into a string and check if `target_ascii` is in it.', xpCost: 5 },
+          { level: 2, content: 'Decode: `decoded = "".join(chr(int(b, 16)) for b in hex_string.split())`. Then `return target_ascii in decoded`.', xpCost: 10 },
+          { level: 3, content: 'Complete: `def find_in_hex(h, t): return t in "".join(chr(int(b, 16)) for b in h.split())`', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'find_in_hex("48 65 6c 6c 6f", "Hello")', expectedOutput: 'True', isHidden: false, order: 1 },
+          { input: 'find_in_hex("48 65 6c 6c 6f", "World")', expectedOutput: 'False', isHidden: false, order: 2 },
+          { input: 'find_in_hex("5a 54 44 7b 66 6c 61 67 7d", "ZTD{flag}")', expectedOutput: 'True', isHidden: true, order: 3 },
+          { input: 'find_in_hex("", "x")', expectedOutput: 'False', isHidden: true, order: 4 },
+        ],
+      },
     ],
   })
   lessonCount++
-  exerciseCount += 1
+  exerciseCount += 3
 
   // ============================================================
   // PHASE 6: CAPSTONE
@@ -2273,10 +2972,56 @@ def find_flags(text, prefix):
           { input: 'find_flags("ZTD{a} ZTD{b} ZTD{c}", "ZTD")', expectedOutput: "['ZTD{a}', 'ZTD{b}', 'ZTD{c}']", isHidden: true, order: 5 },
         ],
       },
+      {
+        title: 'Base64 Multi-Decode',
+        slug: 'base64-multi-decode',
+        description: 'Write a function `multi_decode(encoded)` that takes a Base64-encoded string, decodes it, and if the result is also valid Base64, decodes again (up to 5 layers). Returns the final decoded string. For example, `multi_decode("Vm10a1YxUnRUbGhUVkRBPQ==")` would decode through multiple layers. Use `base64.b64decode()` with validation.',
+        starterCode: `import base64
+
+def multi_decode(encoded):
+    # Decode multiple layers of Base64 encoding
+    pass`,
+        language: 'python',
+        order: 2,
+        xpReward: 40,
+        hints: [
+          { level: 1, content: 'Loop up to 5 times. In each iteration, try `base64.b64decode(current + "==")`. If it succeeds and produces a valid string, continue. If it fails, return the current string.', xpCost: 5 },
+          { level: 2, content: 'Try decode in a loop: `for _ in range(5): try: decoded = base64.b64decode(current + "==").decode(); current = decoded except: break`. Return current.', xpCost: 10 },
+          { level: 3, content: 'Be careful with padding — add `=` as needed. Use try/except to detect when decoding fails, indicating the final layer.', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'multi_decode("SGVsbG8=")', expectedOutput: 'Hello', isHidden: false, order: 1 },
+          { input: 'multi_decode("VTNSa1ZFVkZRbFZU")', expectedOutput: 'U3RkVEVlQmVT', isHidden: false, order: 2 },
+          { input: 'multi_decode("ZmxhZw==")', expectedOutput: 'flag', isHidden: true, order: 3 },
+          { input: 'multi_decode("VjFaV2IxSkhRWGxSUQ==")', expectedOutput: 'U1ZaWmFIZE1T', isHidden: true, order: 4 },
+        ],
+      },
+      {
+        title: 'Steganography Detector',
+        slug: 'steganography-detector',
+        description: 'Write a function `extract_hidden(binary_data)` that takes a list of integers (0-255, representing bytes) and extracts the least significant bit (LSB) from each byte. Collect these bits into groups of 8 and convert each group to a character. Return the decoded string. Stop when you encounter a null byte (8 consecutive zero bits). For example, `extract_hidden([0b01000001, 0b01000010])` extracts bits 1,0 from byte 1 and 0,0 from byte 2, etc.',
+        starterCode: `def extract_hidden(binary_data):
+    # Extract LSB from each byte and decode to string
+    pass`,
+        language: 'python',
+        order: 3,
+        xpReward: 40,
+        hints: [
+          { level: 1, content: 'For each byte, extract the LSB: `bit = byte & 1`. Collect bits into a list. Every 8 bits, convert to a character: `chr(int("".join(bits[i:i+8]), 2))`. Stop at null byte.', xpCost: 5 },
+          { level: 2, content: 'Collect all LSBs: `bits = [str(b & 1) for b in binary_data]`. Then group by 8: `for i in range(0, len(bits), 8): char_bits = bits[i:i+8]; char_val = int("".join(char_bits), 2); if char_val == 0: break; result += chr(char_val)`.', xpCost: 10 },
+          { level: 3, content: 'Complete: extract LSBs, group into 8-bit chunks, convert to characters, stop at null byte.', xpCost: 20 },
+        ],
+        testCases: [
+          { input: 'extract_hidden([0b01000001, 0b01000010, 0b01000011, 0b00000000])', expectedOutput: 'C', isHidden: false, order: 1 },
+          { input: 'extract_hidden([0b00000001, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000])', expectedOutput: '\\x01', isHidden: false, order: 2 },
+          { input: 'extract_hidden([0b00000000])', expectedOutput: '', isHidden: true, order: 3 },
+          { input: 'extract_hidden([0b01011001, 0b01010100, 0b01000100, 0b01111011, 0b01110000, 0b01110010, 0b00000000])', expectedOutput: 'M', isHidden: true, order: 4 },
+        ],
+      },
     ],
   })
   lessonCount++
-  exerciseCount += 1
+  exerciseCount += 3
 
   console.log(`✅ Created ${lessonCount} lessons with ${exerciseCount} exercises (with hints and test cases).\n`)
 
@@ -2502,6 +3247,318 @@ def find_flags(text, prefix):
         hintContent: 'The binary performs XOR encryption on the input and compares it to a hardcoded byte array. Use a disassembler to find the XOR key and the expected ciphertext, then reverse the operation.',
         author: 'Zero to Dev',
         order: 6,
+      },
+    }),
+    // --- Phase 1 Labs ---
+    db.hackingLab.create({
+      data: {
+        title: 'Base64 Detective',
+        slug: 'base64-detective',
+        description: 'Decode multiple layers of Base64 encoding to find the hidden flag. Each layer peels back another encoding.',
+        briefingMdx: 'An intercepted message has been encoded with multiple layers of Base64. Your job is to decode layer after layer until you reveal the hidden flag. Use Python, CyberChef, or command-line tools to peel back the encoding.',
+        setupMdx: '# The encoded message\nencoded = "Wm5KdmRHZ3lhV05yWlhJeVRtRnRhVzV4U1dRaFNHVm5hV0Z1VEc5WFdXZHRZV2xzZFhObFQxSkZXRUZYU0ZKbGJYTkNiMjU1YldWdWREUlVaV3M9"\n\n# Decode it using Python or CyberChef',
+        toolsHint: 'Concepts: Base64 encoding, multi-layer decoding\nTools: Python base64 module, CyberChef, base64 CLI\nYou do NOT need: any network access',
+        phase: 1,
+        difficulty: 'easy',
+        category: 'encoding',
+        expectedFlag: 'ZTD{b4s3_64_0n10n}',
+        xpReward: 80,
+        hintContent: 'Keep decoding the output of each Base64 decode. The flag is buried under 4-5 layers. Use a loop in Python to automate this.',
+        author: 'Zero to Dev',
+        order: 7,
+      },
+    }),
+    db.hackingLab.create({
+      data: {
+        title: 'Substitution Cipher',
+        slug: 'substitution-cipher',
+        description: 'Break a simple substitution cipher using frequency analysis and pattern matching to recover the plaintext flag.',
+        briefingMdx: 'A message has been encrypted with a monoalphabetic substitution cipher — each letter is consistently replaced with another. Use frequency analysis (most common English letters: E, T, A, O, I, N) and pattern matching to crack the cipher and find the flag.',
+        setupMdx: '# The ciphertext\ncipher = "XZQFQ KQFQF QLQZQXKQFQF ZKQFQF QLQZQXKQF"\n\n# Hint: The plaintext contains "ZTD{...}"',
+        toolsHint: 'Concepts: substitution cipher, frequency analysis, pattern matching\nTools: Python, pen and paper, online cipher solvers\nYou do NOT need: any network access',
+        phase: 1,
+        difficulty: 'easy',
+        category: 'crypto',
+        expectedFlag: 'ZTD{fr3qu3ncy_4n4lys1s}',
+        xpReward: 80,
+        hintContent: 'Since you know the flag starts with ZTD{, you can immediately map three letters. Z→Z, T→T, D→D, and the braces are unchanged. Build your substitution table from there.',
+        author: 'Zero to Dev',
+        order: 8,
+      },
+    }),
+    db.hackingLab.create({
+      data: {
+        title: 'Scripting Sprint',
+        slug: 'scripting-sprint',
+        description: 'Write a Python script to solve a series of mathematical puzzles and combine the answers to form the flag.',
+        briefingMdx: 'You have been given a series of mathematical challenges. Each one produces a number. Combine all numbers (concatenated with underscores) inside ZTD{...} to get the flag. Challenge 1: Find the 100th Fibonacci number mod 1000. Challenge 2: Count the prime numbers between 1 and 1000. Challenge 3: Find the sum of digits of 2^100.',
+        setupMdx: '# Write a Python script to solve:\n# 1. 100th Fibonacci number mod 1000\n# 2. Number of primes between 1 and 1000\n# 3. Sum of digits of 2^100\n# Combine as ZTD{answer1_answer2_answer3}',
+        toolsHint: 'Concepts: Fibonacci, prime numbers, digit sum\nTools: Python, math module\nYou do NOT need: any network access',
+        phase: 1,
+        difficulty: 'medium',
+        category: 'scripting',
+        expectedFlag: 'ZTD{875_168_115}',
+        xpReward: 120,
+        hintContent: 'For Fibonacci: use iteration, take mod 1000. For primes: implement a sieve of Eratosthenes or simple is_prime check. For digit sum: compute 2**100, convert to string, sum int(d) for each digit.',
+        author: 'Zero to Dev',
+        order: 9,
+      },
+    }),
+    // --- Phase 2 Labs ---
+    db.hackingLab.create({
+      data: {
+        title: 'Pattern Hunter',
+        slug: 'pattern-hunter',
+        description: 'Find the hidden pattern in a large dataset using algorithmic thinking and extract the flag.',
+        briefingMdx: 'You are given a list of 1000 seemingly random numbers. Hidden within them is a specific pattern: every 7th number, starting from the 3rd, forms a sequence when converted to ASCII. Extract these numbers, convert them to characters, and find the flag.',
+        setupMdx: '# Download the dataset\nwget https://zerotodev.dev/challenges/pattern-hunter/data.json\n\n# Or use the provided Python generator to recreate it',
+        toolsHint: 'Concepts: array indexing, ASCII conversion, pattern recognition\nTools: Python, json module\nYou do NOT need: any network access',
+        phase: 2,
+        difficulty: 'medium',
+        category: 'scripting',
+        expectedFlag: 'ZTD{p4tt3rn_hunt3r}',
+        xpReward: 120,
+        hintContent: 'Index the array with a step of 7, starting at index 2. Convert each number to its ASCII character using chr(). The resulting string contains the flag.',
+        author: 'Zero to Dev',
+        order: 10,
+      },
+    }),
+    db.hackingLab.create({
+      data: {
+        title: 'Hash Detective',
+        slug: 'hash-detective',
+        description: 'Identify hash types and find the original values by understanding different hashing algorithms.',
+        briefingMdx: 'You have been given several hash values. Identify the hashing algorithm used for each (MD5, SHA-1, SHA-256, or bcrypt), then crack or identify the original plaintext. The flag is formed from the first letter of each cracked value.',
+        setupMdx: '# Hash values to investigate:\n# 1. 5d41402abc4b2a76b9719d911017c592\n# 2. afbd229ef06e4b67a2e27c8e9b02e5c8f0677b69\n# 3. 5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8\n# Identify the algorithm and crack each hash.',
+        toolsHint: 'Concepts: MD5, SHA-1, SHA-256, hash identification, rainbow tables\nTools: hashid, hashcat, online hash databases\nYou do NOT need: any network access for basic solving',
+        phase: 2,
+        difficulty: 'medium',
+        category: 'crypto',
+        expectedFlag: 'ZTD{h4sh_cr4ck3r}',
+        xpReward: 150,
+        hintContent: 'Hash 1 is MD5 of "hello". Hash 2 is SHA-1 of "admin". Hash 3 is SHA-256 of "password". The first letters are h, a, p. But the actual flag is hidden in the challenge metadata — look deeper.',
+        author: 'Zero to Dev',
+        order: 11,
+      },
+    }),
+    // --- Phase 3 Labs ---
+    db.hackingLab.create({
+      data: {
+        title: 'Log Detective',
+        slug: 'log-detective',
+        description: 'Analyze a web server access log to identify attack patterns and extract the flag from the attacker activity.',
+        briefingMdx: 'A web server was compromised. You have the access logs. Identify the attacker IP, determine the attack technique (brute force, SQL injection, directory traversal), find the specific request that succeeded, and extract the flag from it.',
+        setupMdx: '# Download the log file\nwget https://zerotodev.dev/challenges/log-detective/access.log\n\n# Analyze it with grep, awk, or Python',
+        toolsHint: 'Concepts: log analysis, attack pattern recognition, web attack identification\nTools: grep, awk, Python, log analysis tools\nYou do NOT need: any network access',
+        phase: 3,
+        difficulty: 'medium',
+        category: 'forensics',
+        expectedFlag: 'ZTD{l0g_4n4lys1s_pr0}',
+        xpReward: 130,
+        hintContent: 'Look for the IP with the most 401/403 responses (brute force), then check that same IP for a successful 200 response with an unusual path. The flag is in the query parameter of that successful request.',
+        author: 'Zero to Dev',
+        order: 12,
+      },
+    }),
+    db.hackingLab.create({
+      data: {
+        title: 'Port Scan Analysis',
+        slug: 'port-scan-analysis',
+        description: 'Analyze nmap scan results to identify services, vulnerabilities, and extract the flag from the findings.',
+        briefingMdx: 'You ran an nmap scan on a target network. The scan output reveals open ports, running services, and version information. Analyze the output to find a vulnerable service, determine the CVE, and construct the flag from the findings.',
+        setupMdx: '# Download the nmap output\nwget https://zerotodev.dev/challenges/port-scan/scan.xml\n\n# Or use the provided text output',
+        toolsHint: 'Concepts: port scanning, service identification, CVE research\nTools: nmap, grep, Python\nYou do NOT need: any external network access',
+        phase: 3,
+        difficulty: 'medium',
+        category: 'forensics',
+        expectedFlag: 'ZTD{vsftpd_234_b4ckd00r}',
+        xpReward: 130,
+        hintContent: 'Look for vsftpd 2.3.4 on port 21 — this version has a famous backdoor vulnerability (CVE-2011-2523). The flag format relates to the service and version.',
+        author: 'Zero to Dev',
+        order: 13,
+      },
+    }),
+    db.hackingLab.create({
+      data: {
+        title: 'Packet Puzzle',
+        slug: 'packet-puzzle',
+        description: 'Analyze a packet capture to extract credentials and find the flag transmitted over the network.',
+        briefingMdx: 'A user logged into an FTP server over an unencrypted connection. A packet capture was taken during the session. Extract the username, password, and a file that was transferred containing the flag.',
+        setupMdx: '# Download the PCAP file\nwget https://zerotodev.dev/challenges/packet-puzzle/capture.pcap\n\n# Analyze with Wireshark, tshark, or scapy',
+        toolsHint: 'Concepts: packet analysis, protocol dissection, FTP cleartext credentials\nTools: Wireshark, tshark, scapy, tcpdump\nYou do NOT need: any network access',
+        phase: 3,
+        difficulty: 'medium',
+        category: 'forensics',
+        expectedFlag: 'ZTD{cl34rt3xt_1s_b4d}',
+        xpReward: 150,
+        hintContent: 'FTP sends credentials in cleartext. Filter for FTP traffic (port 21) to find the USER and PASS commands. Then look at the data connection (port 20 or passive mode port) for the file transfer containing the flag.',
+        author: 'Zero to Dev',
+        order: 14,
+      },
+    }),
+    // --- Phase 4 Additional Labs ---
+    db.hackingLab.create({
+      data: {
+        title: 'CSRF Exploit',
+        slug: 'csrf-exploit',
+        description: 'Craft a CSRF attack to trick an admin into changing their account settings and capture the flag.',
+        briefingMdx: 'A web application has a profile update endpoint that lacks CSRF protection. The admin is logged in and will visit any URL you send them. Craft a malicious page that makes the admin change their email to an address you control, and the flag will be revealed.',
+        setupMdx: '# Clone the vulnerable app\ngit clone https://github.com/zerotodev-labs/csrf-exploit.git\ncd csrf-exploit && pip install -r requirements.txt && python app.py\n\n# Runs on localhost:5000',
+        toolsHint: 'Concepts: CSRF, SameSite cookies, token validation\nTools: browser, curl, HTML editor\nYou do NOT need: any external network access',
+        phase: 4,
+        difficulty: 'medium',
+        category: 'web',
+        expectedFlag: 'ZTD{csr5_t0k3n_m1ss1ng}',
+        xpReward: 150,
+        hintContent: 'Create an HTML page with a hidden form that auto-submits to the profile update endpoint. The admin will visit your page while logged in, and their browser will send the request with their session cookie.',
+        author: 'Zero to Dev',
+        order: 15,
+      },
+    }),
+    db.hackingLab.create({
+      data: {
+        title: 'IDOR Discovery',
+        slug: 'idor-discovery',
+        description: 'Exploit Insecure Direct Object Reference vulnerabilities to access another user data and find the flag.',
+        briefingMdx: 'A web application uses sequential user IDs in its API endpoints. Your account is user ID 5, but the flag is hidden in user ID 1 (admin) profile. Exploit the IDOR vulnerability to access the admin profile data.',
+        setupMdx: '# Start the vulnerable app\ngit clone https://github.com/zerotodev-labs/idor-discovery.git\ncd idor-discovery && pip install -r requirements.txt && python app.py\n\n# Your account: user5:password5 on localhost:3002',
+        toolsHint: 'Concepts: IDOR, access control, API enumeration\nTools: curl, browser DevTools, Burp Suite\nYou do NOT need: any external network access',
+        phase: 4,
+        difficulty: 'medium',
+        category: 'web',
+        expectedFlag: 'ZTD{1d0r_4cc3ss_c0ntr0l}',
+        xpReward: 150,
+        hintContent: 'Try changing the user ID in the API URL from /api/users/5/profile to /api/users/1/profile. The application does not verify that the requesting user has permission to view other users data.',
+        author: 'Zero to Dev',
+        order: 16,
+      },
+    }),
+    db.hackingLab.create({
+      data: {
+        title: 'SSRF Adventure',
+        slug: 'ssrf-adventure',
+        description: 'Exploit a Server-Side Request Forgery vulnerability to access internal services and retrieve the flag.',
+        briefingMdx: 'A web application has a URL preview feature that fetches and displays the content of any URL you provide. Exploit this to make the server request internal resources, including a secret internal API that holds the flag.',
+        setupMdx: '# Start the vulnerable app\ngit clone https://github.com/zerotodev-labs/ssrf-adventure.git\ncd ssrf-adventure && pip install -r requirements.txt && python app.py\n\n# Internal API runs on localhost:8080 (not directly accessible)',
+        toolsHint: 'Concepts: SSRF, internal network scanning, metadata endpoints\nTools: curl, browser, Burp Suite\nYou do NOT need: any external network access',
+        phase: 4,
+        difficulty: 'hard',
+        category: 'web',
+        expectedFlag: 'ZTD{ssrf_1nt3rn4l_4cc3ss}',
+        xpReward: 200,
+        hintContent: 'The URL preview fetches any URL from the server side. Try providing http://localhost:8080/flag or http://127.0.0.1:8080/secret as the URL parameter.',
+        author: 'Zero to Dev',
+        order: 17,
+      },
+    }),
+    // --- Phase 5 Additional Labs ---
+    db.hackingLab.create({
+      data: {
+        title: 'Buffer Overflow Intro',
+        slug: 'buffer-overflow-intro',
+        description: 'Exploit a simple stack buffer overflow to overwrite a variable and change program execution flow.',
+        briefingMdx: 'A vulnerable C program reads user input into a fixed-size buffer without bounds checking. Nearby on the stack is a variable that controls whether the flag is printed. Overflow the buffer to change this variable and get the flag.',
+        setupMdx: '# Download and compile the vulnerable binary\nwget https://zerotodev.dev/challenges/bof-intro/vuln.c\ngcc -o vuln vuln.c -fno-stack-protector -no-pie\n\n# Run it: ./vuln',
+        toolsHint: 'Concepts: stack buffer overflow, variable overwrite, memory layout\nTools: gdb, python, pwntools\nYou do NOT need: any network access',
+        phase: 5,
+        difficulty: 'hard',
+        category: 'pwn',
+        expectedFlag: 'ZTD{buff3r_0v3rfl0w_101}',
+        xpReward: 200,
+        hintContent: 'The buffer is 32 bytes and the "authorized" variable is right after it. Send more than 32 bytes of input — the overflow will write into the authorized variable. Try: python -c "print(\'A\'*32 + \'\\x01\')" | ./vuln',
+        author: 'Zero to Dev',
+        order: 18,
+      },
+    }),
+    db.hackingLab.create({
+      data: {
+        title: 'Password Vault',
+        slug: 'password-vault',
+        description: 'Crack hashed passwords from a leaked database using dictionary attacks and rainbow tables.',
+        briefingMdx: 'A password database was leaked. It contains usernames and MD5-hashed passwords. Using the provided wordlist, crack the passwords and find the admin password which, when combined with the username, forms the flag.',
+        setupMdx: '# Download the leak and wordlist\nwget https://zerotodev.dev/challenges/password-vault/leaked.db\nwget https://zerotodev.dev/challenges/password-vault/rockyou-mini.txt\n\n# Crack the hashes',
+        toolsHint: 'Concepts: MD5 cracking, dictionary attack, salting\nTools: hashcat, john the ripper, Python\nYou do NOT need: any external network access',
+        phase: 5,
+        difficulty: 'medium',
+        category: 'crypto',
+        expectedFlag: 'ZTD{4dm1n:sup3rs3cur3}',
+        xpReward: 150,
+        hintContent: 'Hash each word in the wordlist with MD5 and compare against the leaked hashes. The admin hash starts with "1e3a...". The password is a common variation of "supersecure".',
+        author: 'Zero to Dev',
+        order: 19,
+      },
+    }),
+    db.hackingLab.create({
+      data: {
+        title: 'Network Forensics',
+        slug: 'network-forensics',
+        description: 'Perform network forensic analysis to trace a data exfiltration attack and recover stolen data.',
+        briefingMdx: 'A data exfiltration attack was carried out using DNS tunneling. The attacker encoded stolen data in DNS query subdomains. Analyze the packet capture to decode the exfiltrated data and find the flag.',
+        setupMdx: '# Download the PCAP\nwget https://zerotodev.dev/challenges/network-forensics/dns-exfil.pcap\n\n# Analyze with tshark, Wireshark, or scapy',
+        toolsHint: 'Concepts: DNS tunneling, data exfiltration, base32/64 encoding\nTools: Wireshark, tshark, scapy, Python\nYou do NOT need: any external network access',
+        phase: 5,
+        difficulty: 'hard',
+        category: 'forensics',
+        expectedFlag: 'ZTD{dns_tunn3l_3xf1l}',
+        xpReward: 200,
+        hintContent: 'Filter for DNS queries to the attacker domain. The subdomain labels contain hex-encoded data. Extract them in order, decode from hex, then from base64 to get the flag.',
+        author: 'Zero to Dev',
+        order: 20,
+      },
+    }),
+    // --- Phase 6 Labs ---
+    db.hackingLab.create({
+      data: {
+        title: 'Multi-Step CTF',
+        slug: 'multi-step-ctf',
+        description: 'A multi-stage challenge combining web, crypto, and forensics skills to find the flag.',
+        briefingMdx: 'This challenge has three stages. Stage 1: Find a hidden endpoint on the web application (web). Stage 2: Decrypt the encrypted data found at the endpoint (crypto). Stage 3: Analyze the decrypted file for the flag (forensics). Each stage builds on the previous one.',
+        setupMdx: '# Start the challenge environment\ngit clone https://github.com/zerotodev-labs/multi-step-ctf.git\ncd multi-step-ctf && docker-compose up -d\n\n# The web app runs on localhost:8080',
+        toolsHint: 'Concepts: web enumeration, decryption, file analysis\nTools: curl, Python, Wireshark, binwalk\nYou do NOT need: any external network access',
+        phase: 6,
+        difficulty: 'hard',
+        category: 'web',
+        expectedFlag: 'ZTD{mult1_st3p_m4st3r}',
+        xpReward: 250,
+        hintContent: 'Stage 1: Check robots.txt for the hidden endpoint. Stage 2: The data is XOR-encrypted with a single-byte key — brute force all 256 possibilities. Stage 3: The decrypted file is a PNG with the flag in the EXIF metadata.',
+        author: 'Zero to Dev',
+        order: 21,
+      },
+    }),
+    db.hackingLab.create({
+      data: {
+        title: 'Incident Response',
+        slug: 'incident-response',
+        description: 'Investigate a simulated security breach: analyze logs, identify the attack vector, and recover the flag.',
+        briefingMdx: 'A server was compromised last night. You have access logs, authentication logs, and a memory dump from the compromised system. Piece together what happened: identify when the breach occurred, how the attacker got in, what they did, and find the flag they left behind.',
+        setupMdx: '# Download the evidence\nwget https://zerotodev.dev/challenges/incident-response/evidence.tar.gz\ntar xzf evidence.tar.gz\n\n# Contains: access.log, auth.log, memory.dmp',
+        toolsHint: 'Concepts: incident response, log correlation, memory forensics\nTools: grep, awk, Volatility, strings\nYou do NOT need: any external network access',
+        phase: 6,
+        difficulty: 'expert',
+        category: 'forensics',
+        expectedFlag: 'ZTD{1nc1d3nt_r3sp0ns3}',
+        xpReward: 300,
+        hintContent: 'Correlate the auth.log brute force attempts (02:00-02:15) with the successful login (02:15:03). Then check the access.log for the admin actions taken after login. The memory dump contains the flag in a running process environment variable.',
+        author: 'Zero to Dev',
+        order: 22,
+      },
+    }),
+    db.hackingLab.create({
+      data: {
+        title: 'Full Stack CTF',
+        slug: 'full-stack-ctf',
+        description: 'The ultimate challenge: combine web exploitation, reverse engineering, cryptography, and forensics to capture the flag.',
+        briefingMdx: 'This is the final test. A vulnerable web application hosts a binary challenge. Exploit the web app to download the binary, reverse engineer it to find the encryption key, use the key to decrypt the database, and extract the flag from the decrypted records. You will need skills from every phase.',
+        setupMdx: '# Start the full challenge environment\ngit clone https://github.com/zerotodev-labs/fullstack-ctf.git\ncd fullstack-ctf && docker-compose up -d\n\n# Web app: localhost:8080\n# Database: localhost:3306',
+        toolsHint: 'Concepts: full-stack exploitation, binary analysis, database forensics\nTools: Everything you have learned\nYou do NOT need: any external network access',
+        phase: 6,
+        difficulty: 'expert',
+        category: 'reversing',
+        expectedFlag: 'ZTD{full_st4ck_h4ck3r}',
+        xpReward: 350,
+        hintContent: 'Step 1: SQL injection on the login page to bypass auth. Step 2: The /download endpoint has a path traversal — download /app/encrypt binary. Step 3: Reverse the binary to find the XOR key. Step 4: Decrypt the database with the key. Step 5: Query the flag table.',
+        author: 'Zero to Dev',
+        order: 23,
       },
     }),
   ])
