@@ -30,10 +30,12 @@ export async function GET(
       where: { userId: user.id, solved: true },
     })
 
-    const interviewSolved = await db.interviewAttempt.count({
+    const interviewAttempts = await db.interviewAttempt.findMany({
       where: { userId: user.id, passed: true },
       distinct: ["problemId"],
+      select: { id: true },
     })
+    const interviewSolved = interviewAttempts.length
 
     return NextResponse.json({
       user: {

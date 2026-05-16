@@ -44,10 +44,12 @@ export async function checkPhaseGate(userId: string, phaseNumber: number): Promi
   }
 
   // Check exercise completion
-  const passedExercises = await db.userExerciseAttempt.count({
+  const passedExerciseAttempts = await db.userExerciseAttempt.findMany({
     where: { userId, exerciseId: { in: exerciseIds }, passed: true },
     distinct: ["exerciseId"],
+    select: { id: true },
   })
+  const passedExercises = passedExerciseAttempts.length
 
   if (passedExercises < totalExercises) {
     blockedBy.push(`Pass all ${totalExercises} exercises (${passedExercises}/${totalExercises} done)`)
