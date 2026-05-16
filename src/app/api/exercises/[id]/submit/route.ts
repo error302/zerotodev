@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
+import { rateLimit } from "@/lib/rate-limit"
 
 interface PistonRequest {
   language: string
@@ -29,17 +30,36 @@ interface TestCaseResult {
   isHidden: boolean
 }
 
+const languageMap: Record<string, { language: string; version: string }> = {
+  python: { language: "python", version: "3.12.1" },
+  c: { language: "c", version: "10.2.0" },
+  cpp: { language: "cpp", version: "10.2.0" },
+  javascript: { language: "javascript", version: "18.15.0" },
+  typescript: { language: "typescript", version: "5.0.3" },
+  java: { language: "java", version: "15.0.2" },
+  rust: { language: "rust", version: "1.68.2" },
+  go: { language: "go", version: "1.16.2" },
+  bash: { language: "bash", version: "5.2.0" },
+}
+
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    // Require authentication
     const session = await getServerSession(authOptions)
     if (!session?.user?.id) {
       return NextResponse.json(
         { error: "Authentication required" },
         { status: 401 }
+      )
+    }
+
+    const limit = rateLimit(`execute:${session.user.id}`, { windowMs: 60 * 1000, max: 30 })
+    if (!limit.allowed) {
+      return NextResponse.json(
+        { error: "Too many code executions. Please wait before trying again." },
+        { status: 429 }
       )
     }
 
@@ -54,6 +74,13 @@ export async function POST(
       )
     }
 
+    if (typeof code !== 'string' || code.length > 50000) {
+      return NextResponse.json(
+        { error: "Code must be a string under 50KB" },
+        { status: 400 }
+      )
+    }
+
     if (exerciseId !== id) {
       return NextResponse.json(
         { error: "Exercise ID mismatch" },
@@ -61,7 +88,6 @@ export async function POST(
       )
     }
 
-    // Get the exercise with its test cases
     const exercise = await db.exercise.findUnique({
       where: { id: exerciseId },
       include: {
@@ -79,7 +105,6 @@ export async function POST(
       )
     }
 
-    // Get the current attempt number
     const lastAttempt = await db.userExerciseAttempt.findFirst({
       where: {
         userId: session.user.id,
@@ -89,14 +114,17 @@ export async function POST(
     })
     const attemptNum = (lastAttempt?.attemptNum ?? 0) + 1
 
-    // Run code against each test case using Piston API
+    // Prevent XP double-awarding: if user already passed this exercise, skip XP
+    const alreadyPassed = lastAttempt?.passed === true
+
+    const langConfig = languageMap[exercise.language] ?? languageMap.python
     const testCaseResults: TestCaseResult[] = []
     let allPassed = true
 
     for (const testCase of exercise.testCases) {
       const pistonRequest: PistonRequest = {
-        language: "python",
-        version: "3.12.1",
+        language: langConfig.language,
+        version: langConfig.version,
         files: [{ content: code }],
         stdin: testCase.input,
       }
@@ -108,6 +136,7 @@ export async function POST(
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(pistonRequest),
+            signal: AbortSignal.timeout(15000),
           }
         )
 
@@ -166,12 +195,10 @@ export async function POST(
       }
     }
 
-    // Build combined output for the attempt record
     const combinedOutput = testCaseResults
       .map((r) => `Test ${r.testCaseId}: ${r.passed ? "PASS" : "FAIL"}`)
       .join("\n")
 
-    // Record the attempt
     await db.userExerciseAttempt.create({
       data: {
         userId: session.user.id,
@@ -184,9 +211,8 @@ export async function POST(
       },
     })
 
-    // If all test cases pass, award XP and mark progress
-    if (allPassed) {
-      // Award XP to user
+    // Only award XP if all tests pass AND user hasn't already earned XP for this exercise
+    if (allPassed && !alreadyPassed) {
       await db.user.update({
         where: { id: session.user.id },
         data: {
@@ -195,7 +221,6 @@ export async function POST(
         },
       })
 
-      // Check if all exercises in this lesson are now completed
       const exerciseIds = (await db.exercise.findMany({
         where: { lessonId: exercise.lessonId },
         select: { id: true },
@@ -210,7 +235,6 @@ export async function POST(
         distinct: ["exerciseId"],
       })
 
-      // If all exercises in the lesson have been completed, mark lesson progress
       if (passedAttempts.length === exerciseIds.length) {
         await db.userProgress.upsert({
           where: {
@@ -232,7 +256,6 @@ export async function POST(
           },
         })
 
-        // Also award the lesson XP
         await db.user.update({
           where: { id: session.user.id },
           data: {
@@ -242,7 +265,6 @@ export async function POST(
       }
     }
 
-    // Prepare response (hide expected output and input for hidden test cases)
     const responseResults = testCaseResults.map((r) => ({
       testCaseId: r.testCaseId,
       passed: r.passed,
@@ -256,7 +278,8 @@ export async function POST(
       exerciseId: exercise.id,
       attemptNum,
       passed: allPassed,
-      xpEarned: allPassed ? exercise.xpReward : 0,
+      xpEarned: (allPassed && !alreadyPassed) ? exercise.xpReward : 0,
+      alreadyCompleted: alreadyPassed,
       totalTestCases: testCaseResults.length,
       passedTestCases: testCaseResults.filter((r) => r.passed).length,
       results: responseResults,

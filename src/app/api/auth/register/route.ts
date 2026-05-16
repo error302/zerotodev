@@ -1,13 +1,22 @@
 import { NextRequest, NextResponse } from "next/server"
 import bcrypt from "bcryptjs"
 import { db } from "@/lib/db"
+import { rateLimit } from "@/lib/rate-limit"
 
 export async function POST(request: NextRequest) {
   try {
+    const ip = request.headers.get("x-forwarded-for") ?? "unknown"
+    const limit = rateLimit(`register:${ip}`, { windowMs: 10 * 60 * 1000, max: 5 })
+    if (!limit.allowed) {
+      return NextResponse.json(
+        { error: "Too many registration attempts. Please try again later." },
+        { status: 429 }
+      )
+    }
+
     const body = await request.json()
     const { email, username, password } = body
 
-    // Validate required fields
     if (!email || !username || !password) {
       return NextResponse.json(
         { error: "Email, username, and password are required" },
@@ -15,7 +24,6 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email)) {
       return NextResponse.json(
@@ -24,7 +32,6 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Validate username length
     if (username.length < 3 || username.length > 30) {
       return NextResponse.json(
         { error: "Username must be between 3 and 30 characters" },
@@ -32,15 +39,21 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Validate password length
-    if (password.length < 6) {
+    if (password.length < 8) {
       return NextResponse.json(
-        { error: "Password must be at least 6 characters" },
+        { error: "Password must be at least 8 characters" },
         { status: 400 }
       )
     }
 
-    // Check if email already exists
+    const passwordStrength = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/
+    if (!passwordStrength.test(password)) {
+      return NextResponse.json(
+        { error: "Password must contain at least one uppercase letter, one lowercase letter, and one number" },
+        { status: 400 }
+      )
+    }
+
     const existingEmail = await db.user.findUnique({
       where: { email },
     })
@@ -51,7 +64,6 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Check if username already exists
     const existingUsername = await db.user.findUnique({
       where: { username },
     })
@@ -62,11 +74,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Hash password with 12 rounds
-    const salt = await bcrypt.genSalt(12)
-    const passwordHash = await bcrypt.hash(password, salt)
+    const passwordHash = await bcrypt.hash(password, 12)
 
-    // Create user with default 100 XP, phase 1
     const user = await db.user.create({
       data: {
         email,
@@ -79,7 +88,6 @@ export async function POST(request: NextRequest) {
       },
     })
 
-    // Return user data without password
     return NextResponse.json(
       {
         id: user.id,

@@ -3,6 +3,10 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from "bcryptjs"
 import { db } from "./db"
 
+if (!process.env.NEXTAUTH_SECRET) {
+  throw new Error("NEXTAUTH_SECRET environment variable is required")
+}
+
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -40,14 +44,14 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id
-        token.username = user.name
+        token.username = user.name ?? null
       }
       return token
     },
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string
-        session.user.username = token.username as string
+        session.user.username = token.username as string | null
       }
       return session
     },
@@ -59,7 +63,5 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
-  secret:
-    process.env.NEXTAUTH_SECRET ||
-    "zerotodev-dev-secret-key-change-in-production",
+  secret: process.env.NEXTAUTH_SECRET,
 }

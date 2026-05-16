@@ -1,22 +1,23 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { decrypt } from '@/utils/auth';
+import { getToken } from 'next-auth/jwt';
 
-// Add paths that require authentication here
-const protectedPaths = ['/dashboard', '/labs', '/learn'];
+const protectedPaths = ['/dashboard', '/labs', '/learn', '/profile'];
 
 export async function middleware(request: NextRequest) {
-  const session = request.cookies.get('session')?.value;
-  const isProtectedPath = protectedPaths.some(path => request.nextUrl.pathname.startsWith(path));
+  const isProtectedPath = protectedPaths.some(path =>
+    request.nextUrl.pathname.startsWith(path)
+  );
 
   if (isProtectedPath) {
-    if (!session) {
-      return NextResponse.redirect(new URL('/login', request.url));
-    }
-    
-    const payload = await decrypt(session);
-    if (!payload) {
-      return NextResponse.redirect(new URL('/login', request.url));
+    const token = await getToken({
+      req: request,
+      secret: process.env.NEXTAUTH_SECRET,
+    });
+
+    if (!token) {
+      const signInUrl = new URL('/', request.url);
+      return NextResponse.redirect(signInUrl);
     }
   }
 
@@ -24,5 +25,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|logo.svg|robots.txt).*)'],
 };

@@ -3,18 +3,26 @@ import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
+import { rateLimit } from "@/lib/rate-limit"
 
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    // Require authentication
     const session = await getServerSession(authOptions)
     if (!session?.user?.id) {
       return NextResponse.json(
         { error: "Authentication required" },
         { status: 401 }
+      )
+    }
+
+    const limit = rateLimit(`flag:${session.user.id}`, { windowMs: 60 * 1000, max: 10 })
+    if (!limit.allowed) {
+      return NextResponse.json(
+        { error: "Too many flag attempts. Please wait before trying again." },
+        { status: 429 }
       )
     }
 
@@ -29,7 +37,6 @@ export async function POST(
       )
     }
 
-    // Find the lab
     const lab = await db.hackingLab.findUnique({
       where: { id },
     })
@@ -48,7 +55,6 @@ export async function POST(
       )
     }
 
-    // Find or create lab session
     const existingSession = await db.labSession.findUnique({
       where: {
         userId_labId: {
@@ -58,7 +64,6 @@ export async function POST(
       },
     })
 
-    // If already solved, don't allow re-submission
     if (existingSession?.solved) {
       return NextResponse.json({
         success: true,
@@ -67,29 +72,26 @@ export async function POST(
       })
     }
 
-    // Compare submitted flag to expected flag using SHA-256 hashes
     const submittedFlagHash = createHash('sha256').update(submittedFlag.trim()).digest('hex')
     const expectedFlagHash = createHash('sha256').update(lab.expectedFlag.trim()).digest('hex')
     const isCorrect = submittedFlagHash === expectedFlagHash
 
     if (existingSession) {
-      // Update existing session
       await db.labSession.update({
         where: { id: existingSession.id },
         data: {
-          submittedFlag,
+          submittedFlag: submittedFlagHash,
           solved: isCorrect,
           attempts: { increment: 1 },
           solvedAt: isCorrect ? new Date() : undefined,
         },
       })
     } else {
-      // Create new session
       await db.labSession.create({
         data: {
           userId: session.user.id,
           labId: lab.id,
-          submittedFlag,
+          submittedFlag: submittedFlagHash,
           solved: isCorrect,
           attempts: 1,
           solvedAt: isCorrect ? new Date() : undefined,
@@ -97,7 +99,6 @@ export async function POST(
       })
     }
 
-    // If correct, award XP
     if (isCorrect) {
       await db.user.update({
         where: { id: session.user.id },

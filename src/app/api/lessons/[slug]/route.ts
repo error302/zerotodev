@@ -39,7 +39,7 @@ export async function GET(
     // Check if user is authenticated
     const session = await getServerSession(authOptions)
 
-    let userProgress = null
+    let userProgress: { completed: boolean; completedAt: string | null; hintsUsed: number } | null = null
     let exerciseAttempts: Record<string, { passed: boolean; attemptNum: number; output: string | null }[]> = {}
 
     if (session?.user?.id) {
