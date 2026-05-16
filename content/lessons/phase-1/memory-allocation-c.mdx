@@ -1,0 +1,86 @@
+---
+title: Memory Allocation in C
+description: Understand how malloc works under the hood by building your own simple allocator
+phase: 1
+category: cs
+order: 1
+xpReward: 50
+language: c
+---
+
+# Memory Allocation in C
+
+To truly understand how computers work, you must understand **memory**. High-level languages like Python or JavaScript hide this from you. In this lesson, you will drop down to C to manipulate memory directly.
+
+## How Memory Works
+
+When you call `malloc()` in C, the operating system gives you a pointer to a block of memory. But what is actually happening?
+
+```c
+#include <stdlib.h>
+
+int main() {
+    int* ptr = (int*)malloc(sizeof(int) * 10);
+    if (ptr == NULL) {
+        return 1; // Allocation failed
+    }
+    ptr[0] = 42;
+    free(ptr);
+    return 0;
+}
+```
+
+### The Heap
+
+The **heap** is a region of memory managed by the OS. When you call `malloc`, the OS:
+
+1. Finds a free block of the requested size
+2. Marks it as allocated
+3. Returns a pointer to the start of the block
+
+## Your Task: Build `simple_malloc`
+
+You will implement a simplified version of `malloc`. Instead of managing the real heap, you will manage a fixed-size array that acts as your heap.
+
+### Requirements
+
+- Implement `simple_malloc(size_t size)` that returns a pointer to the current offset
+- Advance the offset by the requested size
+- Return `NULL` if there is not enough space
+
+### Starter Code
+
+```c
+#include <stdio.h>
+#include <stddef.h>
+
+#define HEAP_SIZE 1024
+char heap[HEAP_SIZE];
+size_t current_offset = 0;
+
+void* simple_malloc(size_t size) {
+    // Your code here
+    return NULL;
+}
+
+int main() {
+    int* ptr1 = (int*)simple_malloc(sizeof(int));
+    if (ptr1 == NULL) {
+        printf("Failed to allocate\n");
+        return 1;
+    }
+    *ptr1 = 42;
+    printf("Value: %d\n", *ptr1);
+    return 0;
+}
+```
+
+## Why This Matters
+
+Understanding memory allocation is fundamental to:
+
+- **Buffer overflow attacks** — knowing how memory is laid out helps you exploit it
+- **Performance optimization** — avoiding unnecessary allocations
+- **Systems programming** — writing kernels, databases, and compilers
+
+> **Security Connection:** Buffer overflows (CWE-120) are consistently in the top 25 most dangerous software weaknesses. They exist because of how memory allocation works.

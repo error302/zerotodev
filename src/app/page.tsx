@@ -198,6 +198,7 @@ export default function ZeroToDevApp() {
   // New feature state
   const [currentAssessmentSlug, setCurrentAssessmentSlug] = useState<string>('')
   const [exploitExercise, setExploitExercise] = useState<{ id: string; title: string; description: string; language: string; starterCode: string } | null>(null)
+  const [assessments, setAssessments] = useState<Array<{ id: string; title: string; slug: string; description: string; phaseNumber: number; timeLimit: number; passScore: number; problemCount: number; attempt: { score: number | null; passed: boolean | null } | null }>>([])
 
   // Editor state
   const [editorCode, setEditorCode] = useState('')
@@ -301,16 +302,28 @@ export default function ZeroToDevApp() {
     }
   }, [])
 
+  const fetchAssessments = useCallback(async () => {
+    try {
+      const res = await fetch('/api/assessments')
+      if (!res.ok) return
+      const data = await res.json()
+      setAssessments(data.assessments || [])
+    } catch (err) {
+      console.error('Failed to fetch assessments:', err)
+    }
+  }, [])
+
   // Load data when session changes
   useEffect(() => {
     if (session) {
       fetchPhasesWithLessons()
       fetchProgress()
+      fetchAssessments()
       setView('dashboard')
     } else {
       setView('auth')
     }
-  }, [session, fetchPhasesWithLessons, fetchProgress])
+  }, [session, fetchPhasesWithLessons, fetchProgress, fetchAssessments])
 
   // ============================================================
   // AUTH HANDLERS
@@ -766,33 +779,80 @@ export default function ZeroToDevApp() {
             )}
 
             {/* Quick Actions */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <Card className="bg-[#111118] border-border/50 hover:border-emerald-500/30 transition-colors cursor-pointer" onClick={() => navigateTo('lessons')}>
                 <CardContent className="p-6 flex items-center gap-4">
-                  <div className="p-3 rounded-xl bg-emerald-500/10">
-                    <BookOpen size={24} className="text-emerald-400" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-white">Continue Lessons</h3>
-                    <p className="text-sm text-muted-foreground">Pick up where you left off</p>
-                  </div>
+                  <div className="p-3 rounded-xl bg-emerald-500/10"><BookOpen size={24} className="text-emerald-400" /></div>
+                  <div><h3 className="font-semibold text-white">Continue Lessons</h3><p className="text-sm text-muted-foreground">Pick up where you left off</p></div>
                   <ChevronRight size={20} className="text-muted-foreground ml-auto" />
                 </CardContent>
               </Card>
 
               <Card className="bg-[#111118] border-border/50 hover:border-cyan-500/30 transition-colors cursor-pointer" onClick={() => navigateTo('labs')}>
                 <CardContent className="p-6 flex items-center gap-4">
-                  <div className="p-3 rounded-xl bg-cyan-500/10">
-                    <Shield size={24} className="text-cyan-400" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-white">Hacking Labs</h3>
-                    <p className="text-sm text-muted-foreground">Test your cybersecurity skills</p>
-                  </div>
+                  <div className="p-3 rounded-xl bg-cyan-500/10"><Shield size={24} className="text-cyan-400" /></div>
+                  <div><h3 className="font-semibold text-white">Hacking Labs</h3><p className="text-sm text-muted-foreground">Test your cybersecurity skills</p></div>
+                  <ChevronRight size={20} className="text-muted-foreground ml-auto" />
+                </CardContent>
+              </Card>
+
+              <Card className="bg-[#111118] border-border/50 hover:border-purple-500/30 transition-colors cursor-pointer" onClick={() => navigateTo('interview')}>
+                <CardContent className="p-6 flex items-center gap-4">
+                  <div className="p-3 rounded-xl bg-purple-500/10"><Brain size={24} className="text-purple-400" /></div>
+                  <div><h3 className="font-semibold text-white">Interview Prep</h3><p className="text-sm text-muted-foreground">LeetCode-style problems</p></div>
+                  <ChevronRight size={20} className="text-muted-foreground ml-auto" />
+                </CardContent>
+              </Card>
+
+              <Card className="bg-[#111118] border-border/50 hover:border-yellow-500/30 transition-colors cursor-pointer" onClick={() => navigateTo('portfolio')}>
+                <CardContent className="p-6 flex items-center gap-4">
+                  <div className="p-3 rounded-xl bg-yellow-500/10"><Award size={24} className="text-yellow-400" /></div>
+                  <div><h3 className="font-semibold text-white">Portfolio</h3><p className="text-sm text-muted-foreground">Your achievements</p></div>
                   <ChevronRight size={20} className="text-muted-foreground ml-auto" />
                 </CardContent>
               </Card>
             </div>
+
+            {/* Assessments */}
+            {assessments.length > 0 && (
+              <Card className="bg-[#111118] border-border/50">
+                <CardHeader>
+                  <CardTitle className="text-white flex items-center gap-2"><Target size={18} className="text-red-400" /> Readiness Assessments</CardTitle>
+                  <CardDescription className="text-muted-foreground">Timed challenges to prove you are ready for the next phase</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {assessments.map((a) => (
+                      <div key={a.id} className="flex items-center justify-between p-3 rounded-lg bg-[#0d0d14] border border-border/30">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <span className="font-medium text-white text-sm">Phase {a.phaseNumber}: {a.title}</span>
+                            {a.attempt?.passed && <CheckCircle2 size={14} className="text-emerald-400" />}
+                            {a.attempt && !a.attempt.passed && <XCircle size={14} className="text-red-400" />}
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-0.5">{a.description}</p>
+                        </div>
+                        <div className="flex items-center gap-3 ml-4">
+                          <div className="text-right hidden sm:block">
+                            <p className="text-xs text-muted-foreground">{a.problemCount} problems</p>
+                            <p className="text-xs text-muted-foreground">{a.timeLimit} min · {a.passScore}% pass</p>
+                          </div>
+                          {a.attempt?.passed ? (
+                            <Badge variant="outline" className="text-xs border-emerald-500/30 text-emerald-400">Passed ({a.attempt.score}%)</Badge>
+                          ) : a.attempt ? (
+                            <Badge variant="outline" className="text-xs border-red-500/30 text-red-400">Failed ({a.attempt.score}%)</Badge>
+                          ) : (
+                            <Button size="sm" onClick={() => { setCurrentAssessmentSlug(a.slug); setView('assessment') }} className="bg-red-500 hover:bg-red-600 text-white text-xs">
+                              Start
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Achievements */}
             {progressData?.achievements && progressData.achievements.length > 0 && (

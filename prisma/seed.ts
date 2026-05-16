@@ -29,6 +29,15 @@ async function main() {
   await db.verificationToken.deleteMany()
   await db.user.deleteMany()
   await db.phase.deleteMany()
+  // New models
+  await db.portfolioArtifact.deleteMany()
+  await db.interviewAttempt.deleteMany()
+  await db.interviewProblem.deleteMany()
+  await db.assessmentAttempt.deleteMany()
+  await db.assessmentProblem.deleteMany()
+  await db.assessment.deleteMany()
+  await db.projectSubmission.deleteMany()
+  await db.project.deleteMany()
 
   console.log('✅ All existing data cleared.\n')
 
@@ -4699,6 +4708,228 @@ def decode_chain(data, encodings):
   })
   console.log('✅ Created Phase 1 Readiness Check assessment.\n')
 
+  // Phase 2 Assessment
+  await db.assessment.create({
+    data: {
+      phaseNumber: 2,
+      title: 'Phase 2 Readiness Check',
+      slug: 'phase-2-readiness',
+      description: 'Test your knowledge of data structures, algorithms, and problem-solving patterns.',
+      timeLimit: 45,
+      passScore: 70,
+      order: 2,
+      isRequired: true,
+      problems: {
+        create: [
+          {
+            title: 'Reverse a Linked List',
+            type: 'coding',
+            description: 'Write a function that reverses a singly linked list and returns the new head.',
+            starterCode: 'class Node:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n\ndef reverse_list(head):\n    """\n    :type head: Node\n    :rtype: Node\n    """\n    pass',
+            language: 'python',
+            points: 25,
+            order: 1,
+          },
+          {
+            title: 'What is the time complexity of binary search?',
+            type: 'multiple_choice',
+            description: 'What is the worst-case time complexity of binary search on a sorted array of n elements?',
+            correctAnswer: 'O(log n)',
+            points: 10,
+            order: 2,
+          },
+          {
+            title: 'Explain when to use a hash table vs a binary search tree',
+            type: 'short_answer',
+            description: 'In 2-3 sentences, explain when you would choose a hash table over a BST and vice versa.',
+            correctAnswer: 'hash table provides O(1) average lookup while BST provides ordered traversal and O(log n) worst case',
+            points: 15,
+            order: 3,
+          },
+        ],
+      },
+    },
+  })
+  console.log('✅ Created Phase 2 Readiness Check assessment.\n')
+
+  // Phase 3 Assessment
+  await db.assessment.create({
+    data: {
+      phaseNumber: 3,
+      title: 'Phase 3 Readiness Check',
+      slug: 'phase-3-readiness',
+      description: 'Prove your understanding of operating systems, networking, and systems programming.',
+      timeLimit: 45,
+      passScore: 70,
+      order: 3,
+      isRequired: true,
+      problems: {
+        create: [
+          {
+            title: 'TCP Three-Way Handshake',
+            type: 'short_answer',
+            description: 'Describe the TCP three-way handshake process. What are the three steps and what flags are set in each?',
+            correctAnswer: 'SYN SYN-ACK ACK client sends SYN server responds with SYN-ACK client sends ACK',
+            points: 20,
+            order: 1,
+          },
+          {
+            title: 'What does DNS stand for?',
+            type: 'multiple_choice',
+            description: 'What does DNS stand for in networking?',
+            correctAnswer: 'Domain Name System',
+            points: 10,
+            order: 2,
+          },
+        ],
+      },
+    },
+  })
+  console.log('✅ Created Phase 3 Readiness Check assessment.\n')
+
+  // Phase 4 Assessment
+  await db.assessment.create({
+    data: {
+      phaseNumber: 4,
+      title: 'Phase 4 Readiness Check',
+      slug: 'phase-4-readiness',
+      description: 'Test your web security knowledge: OWASP Top 10, vulnerability analysis, and secure coding.',
+      timeLimit: 45,
+      passScore: 75,
+      order: 4,
+      isRequired: true,
+      problems: {
+        create: [
+          {
+            title: 'Identify the vulnerability',
+            type: 'short_answer',
+            description: 'What vulnerability exists in this code: `query("SELECT * FROM users WHERE id = " + user_input)`?',
+            correctAnswer: 'SQL injection',
+            points: 20,
+            order: 1,
+          },
+          {
+            title: 'What is CSRF?',
+            type: 'multiple_choice',
+            description: 'What does CSRF stand for?',
+            correctAnswer: 'Cross-Site Request Forgery',
+            points: 10,
+            order: 2,
+          },
+          {
+            title: 'How do you prevent XSS?',
+            type: 'short_answer',
+            description: 'Name two ways to prevent Cross-Site Scripting (XSS) attacks.',
+            correctAnswer: 'output encoding input sanitization content security policy escaping',
+            points: 20,
+            order: 3,
+          },
+        ],
+      },
+    },
+  })
+  console.log('✅ Created Phase 4 Readiness Check assessment.\n')
+
+  // Phase 5 Assessment
+  await db.assessment.create({
+    data: {
+      phaseNumber: 5,
+      title: 'Phase 5 Readiness Check',
+      slug: 'phase-5-readiness',
+      description: 'Advanced security: cryptography, forensics, reverse engineering, and incident response.',
+      timeLimit: 60,
+      passScore: 70,
+      order: 5,
+      isRequired: true,
+      problems: {
+        create: [
+          {
+            title: 'RSA Key Components',
+            type: 'short_answer',
+            description: 'What are the two keys in RSA encryption called and what is each used for?',
+            correctAnswer: 'public key for encryption private key for decryption',
+            points: 15,
+            order: 1,
+          },
+          {
+            title: 'What is a hash function?',
+            type: 'multiple_choice',
+            description: 'Which property is NOT required for a cryptographic hash function?',
+            correctAnswer: 'reversible',
+            points: 10,
+            order: 2,
+          },
+        ],
+      },
+    },
+  })
+  console.log('✅ Created Phase 5 Readiness Check assessment.\n')
+
+  // More Interview Problems
+  const moreInterviewProblems = [
+    {
+      title: 'Merge Two Sorted Lists',
+      slug: 'merge-two-sorted-lists',
+      difficulty: 'easy',
+      category: 'strings',
+      pattern: 'two_pointers',
+      description: 'Merge two sorted linked lists and return it as a sorted list.\n\nExample:\nInput: 1->2->4, 1->3->4\nOutput: 1->1->2->3->4->4',
+      starterCode: 'class ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n\ndef merge_two_lists(l1, l2):\n    """\n    :type l1: ListNode\n    :type l2: ListNode\n    :rtype: ListNode\n    """\n    pass',
+      language: 'python',
+      testCases: JSON.stringify([]),
+      hints: null,
+      solution: 'def merge_two_lists(l1, l2):\n    dummy = ListNode()\n    current = dummy\n    while l1 and l2:\n        if l1.val < l2.val:\n            current.next = l1\n            l1 = l1.next\n        else:\n            current.next = l2\n            l2 = l2.next\n        current = current.next\n    current.next = l1 or l2\n    return dummy.next',
+      xpReward: 50,
+    },
+    {
+      title: 'Maximum Subarray',
+      slug: 'maximum-subarray',
+      difficulty: 'medium',
+      category: 'arrays',
+      pattern: 'kadane',
+      description: 'Given an integer array nums, find the contiguous subarray with the largest sum and return its sum.\n\nExample:\nInput: [-2,1,-3,4,-1,2,1,-5,4]\nOutput: 6\nExplanation: [4,-1,2,1] has the largest sum = 6.',
+      starterCode: 'def max_sub_array(nums):\n    """\n    :type nums: List[int]\n    :rtype: int\n    """\n    pass',
+      language: 'python',
+      testCases: JSON.stringify([]),
+      hints: null,
+      solution: 'def max_sub_array(nums):\n    max_sum = nums[0]\n    current_sum = nums[0]\n    for i in range(1, len(nums)):\n        current_sum = max(nums[i], current_sum + nums[i])\n        max_sum = max(max_sum, current_sum)\n    return max_sum',
+      xpReward: 75,
+    },
+    {
+      title: 'Binary Search',
+      slug: 'binary-search',
+      difficulty: 'easy',
+      category: 'arrays',
+      pattern: 'binary_search',
+      description: 'Given a sorted array of n integers and a target value, return the index if the target is found. If not, return -1.\n\nExample:\nInput: nums = [-1,0,3,5,9,12], target = 9\nOutput: 4',
+      starterCode: 'def search(nums, target):\n    """\n    :type nums: List[int]\n    :type target: int\n    :rtype: int\n    """\n    pass',
+      language: 'python',
+      testCases: JSON.stringify([]),
+      hints: null,
+      solution: 'def search(nums, target):\n    left, right = 0, len(nums) - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if nums[mid] == target:\n            return mid\n        elif nums[mid] < target:\n            left = mid + 1\n        else:\n            right = mid - 1\n    return -1',
+      xpReward: 50,
+    },
+    {
+      title: 'XOR Cipher Breaker',
+      slug: 'xor-cipher-breaker',
+      difficulty: 'medium',
+      category: 'security',
+      pattern: 'frequency_analysis',
+      description: 'Write a function that attempts to break a single-byte XOR cipher using frequency analysis.\n\nThe function should try all 256 possible keys and return the most likely plaintext based on English letter frequency.\n\nExample:\nInput: bytes([0x1b, 0x37, 0x37, 0x3b, 0x36])\nOutput: (key, plaintext_string)',
+      starterCode: 'def break_xor_cipher(ciphertext):\n    """\n    :type ciphertext: bytes\n    :rtype: tuple(int, str)\n    """\n    # English letter frequency scoring\n    ENGLISH_FREQ = {\n        \'e\': 12.7, \'t\': 9.1, \'a\': 8.2, \'o\': 7.5, \'i\': 7.0,\n        \'n\': 6.7, \'s\': 6.3, \'h\': 6.1, \'r\': 6.0, \'d\': 4.3,\n    }\n    pass',
+      language: 'python',
+      testCases: JSON.stringify([]),
+      hints: null,
+      solution: 'def break_xor_cipher(ciphertext):\n    ENGLISH_FREQ = {"e": 12.7, "t": 9.1, "a": 8.2, "o": 7.5, "i": 7.0}\n    best_score = -1\n    best_key = 0\n    best_text = ""\n    for key in range(256):\n        decrypted = bytes([b ^ key for b in ciphertext])\n        try:\n            text = decrypted.decode("ascii").lower()\n            score = sum(ENGLISH_FREQ.get(c, 0) for c in text)\n            if score > best_score:\n                best_score = score\n                best_key = key\n                best_text = text\n        except:\n            continue\n    return (best_key, best_text)',
+      xpReward: 100,
+    },
+  ]
+
+  for (const p of moreInterviewProblems) {
+    await db.interviewProblem.create({ data: p })
+  }
+  console.log(`✅ Created ${moreInterviewProblems.length} more interview problems.\n`)
+
   // ----------------------------------------------------------
   // PORTFOLIO: Auto-generate artifacts for demo user
   // ----------------------------------------------------------
@@ -4733,6 +4964,8 @@ def decode_chain(data, encodings):
   console.log(`  Exercises:      ${exerciseCount}`)
   console.log(`  Achievements:   ${achievements.length}`)
   console.log(`  Hacking Labs:   ${labs.length}`)
+  console.log(`  Assessments:    5 (one per phase)`)
+  console.log(`  Interview Probs: 7 (LeetCode + security)`)
   console.log(`  Admin User:     moe@zerotodev.dev / password123`)
   console.log('═══════════════════════════════════════════════════\n')
 }
