@@ -4557,6 +4557,172 @@ def decode_chain(data, encodings):
   console.log(`✅ Created admin user: ${adminUser.username} (${adminUser.email})\n`)
 
   // ----------------------------------------------------------
+  // INTERVIEW PROBLEMS
+  // ----------------------------------------------------------
+  console.log('🧠 Seeding interview problems...')
+
+  const interviewProblems = [
+    {
+      title: 'Two Sum',
+      slug: 'two-sum',
+      difficulty: 'easy',
+      category: 'arrays',
+      pattern: 'hash_map',
+      description: 'Given an array of integers nums and an integer target, return indices of the two numbers that add up to target.\n\nYou may assume each input has exactly one solution, and you may not use the same element twice.\n\nExample:\nInput: nums = [2,7,11,15], target = 9\nOutput: [0,1]',
+      starterCode: 'def two_sum(nums, target):\n    """\n    :type nums: List[int]\n    :type target: int\n    :rtype: List[int]\n    """\n    pass',
+      language: 'python',
+      testCases: JSON.stringify([
+        { input: '[2,7,11,15]\n9', expectedOutput: '[0, 1]', hidden: false },
+        { input: '[3,2,4]\n6', expectedOutput: '[1, 2]', hidden: false },
+        { input: '[3,3]\n6', expectedOutput: '[0, 1]', hidden: true },
+      ]),
+      hints: JSON.stringify([
+        { level: 1, content: 'Think about using a hash map to store values you have seen.', xpCost: 5 },
+        { level: 2, content: 'For each number, check if (target - number) exists in the map.', xpCost: 10 },
+      ]),
+      solution: 'def two_sum(nums, target):\n    seen = {}\n    for i, num in enumerate(nums):\n        complement = target - num\n        if complement in seen:\n            return [seen[complement], i]\n        seen[num] = i\n    return []',
+      xpReward: 50,
+    },
+    {
+      title: 'Valid Parentheses',
+      slug: 'valid-parentheses',
+      difficulty: 'easy',
+      category: 'strings',
+      pattern: 'stack',
+      description: 'Given a string s containing just the characters \'(\', \')\', \'{\', \'}\', \'[\' and \']\', determine if the input string is valid.\n\nAn input string is valid if:\n1. Open brackets must be closed by the same type of brackets.\n2. Open brackets must be closed in the correct order.\n3. Every close bracket has a corresponding open bracket of the same type.\n\nExample:\nInput: s = "()[]{}"\nOutput: true',
+      starterCode: 'def is_valid(s):\n    """\n    :type s: str\n    :rtype: bool\n    """\n    pass',
+      language: 'python',
+      testCases: JSON.stringify([
+        { input: '()[]{}', expectedOutput: 'True', hidden: false },
+        { input: '(]', expectedOutput: 'False', hidden: false },
+        { input: '([)]', expectedOutput: 'False', hidden: true },
+        { input: '{[]}', expectedOutput: 'True', hidden: true },
+      ]),
+      hints: JSON.stringify([
+        { level: 1, content: 'A stack is the perfect data structure for matching pairs.', xpCost: 5 },
+        { level: 2, content: 'Push opening brackets, pop and compare on closing brackets.', xpCost: 10 },
+      ]),
+      solution: 'def is_valid(s):\n    stack = []\n    mapping = {")": "(", "}": "{", "]": "["}\n    for char in s:\n        if char in mapping:\n            if not stack or stack.pop() != mapping[char]:\n                return False\n        else:\n            stack.append(char)\n    return not stack',
+      xpReward: 50,
+    },
+    {
+      title: 'SQL Injection Detection',
+      slug: 'sql-injection-detection',
+      difficulty: 'medium',
+      category: 'security',
+      pattern: 'pattern_matching',
+      description: 'Write a function that detects potential SQL injection patterns in a user input string.\n\nReturn True if the input contains any of these patterns:\n- SQL comments (-- or # or /*)\n- Common SQL keywords in suspicious positions (DROP, DELETE, INSERT, UPDATE, UNION, SELECT combined with quotes)\n- Tautology patterns (OR 1=1, OR \'a\'=\'a\')\n\nExample:\nInput: "admin\' OR 1=1 --"\nOutput: True',
+      starterCode: 'import re\n\ndef detect_sqli(input_str):\n    """\n    :type input_str: str\n    :rtype: bool\n    """\n    pass',
+      language: 'python',
+      testCases: JSON.stringify([
+        { input: "admin' OR 1=1 --", expectedOutput: 'True', hidden: false },
+        { input: 'hello world', expectedOutput: 'False', hidden: false },
+        { input: "'; DROP TABLE users; --", expectedOutput: 'True', hidden: true },
+        { input: "admin' UNION SELECT * FROM passwords --", expectedOutput: 'True', hidden: true },
+      ]),
+      hints: JSON.stringify([
+        { level: 1, content: 'Use regex to look for comment patterns and SQL keywords.', xpCost: 5 },
+        { level: 2, content: 'Check for: --, #, /*, and combinations of quotes with SQL keywords.', xpCost: 10 },
+      ]),
+      solution: "import re\n\ndef detect_sqli(input_str):\n    patterns = [\n        r'(--|#|/\\*)',\n        r\"('\\s*(OR|AND)\\s+\\d+=\\d+)\",\n        r\"('\\s*(OR|AND)\\s+'[^']*'\\s*=\\s*')\",\n        r'(DROP|DELETE|INSERT|UPDATE|UNION)\\s+(TABLE|FROM|INTO|SELECT)',\n    ]\n    for pattern in patterns:\n        if re.search(pattern, input_str, re.IGNORECASE):\n            return True\n    return False",
+      xpReward: 75,
+    },
+  ]
+
+  for (const p of interviewProblems) {
+    await db.interviewProblem.create({ data: p })
+  }
+  console.log(`✅ Created ${interviewProblems.length} interview problems.\n`)
+
+  // ----------------------------------------------------------
+  // ASSESSMENTS
+  // ----------------------------------------------------------
+  console.log('📝 Seeding assessments...')
+
+  await db.assessment.create({
+    data: {
+      phaseNumber: 1,
+      title: 'Phase 1 Readiness Check',
+      slug: 'phase-1-readiness',
+      description: 'Prove you understand Python fundamentals, basic security concepts, and can write correct code under time pressure.',
+      timeLimit: 30,
+      passScore: 70,
+      order: 1,
+      isRequired: true,
+      problems: {
+        create: [
+          {
+            title: 'FizzBuzz Extended',
+            type: 'coding',
+            description: 'Write a function that prints numbers from 1 to n. For multiples of 3 print "Fizz", for multiples of 5 print "Buzz", for multiples of both print "FizzBuzz". For multiples of 7 print "Bang". For numbers that are multiples of both 3 and 7 print "FizzBang".',
+            starterCode: 'def fizzbuzz_extended(n):\n    """\n    :type n: int\n    :rtype: List[str]\n    """\n    pass',
+            language: 'python',
+            testCases: JSON.stringify([
+              { input: '15', expectedOutput: "['1', '2', 'Fizz', '4', 'Buzz', 'Fizz', 'Bang', '8', 'Fizz', 'Buzz', '11', 'Fizz', '13', 'Bang', 'FizzBuzz']", hidden: false },
+              { input: '3', expectedOutput: "['1', '2', 'Fizz']", hidden: false },
+            ]),
+            points: 20,
+            order: 1,
+          },
+          {
+            title: 'Password Strength Checker',
+            type: 'coding',
+            description: 'Write a function that checks if a password meets minimum security requirements:\n- At least 8 characters\n- Contains at least one uppercase letter\n- Contains at least one lowercase letter\n- Contains at least one digit\n- Contains at least one special character (!@#$%^&*)\n\nReturn a tuple: (is_valid: bool, missing: list of strings describing what is missing)',
+            starterCode: 'def check_password_strength(password):\n    """\n    :type password: str\n    :rtype: tuple(bool, list[str])\n    """\n    pass',
+            language: 'python',
+            testCases: JSON.stringify([
+              { input: 'Passw0rd!', expectedOutput: '(True, [])', hidden: false },
+              { input: 'password', expectedOutput: "(False, ['uppercase', 'digit', 'special'])", hidden: false },
+            ]),
+            points: 20,
+            order: 2,
+          },
+          {
+            title: 'What does XSS stand for?',
+            type: 'multiple_choice',
+            description: 'What does XSS stand for in web security?',
+            correctAnswer: 'Cross-Site Scripting',
+            points: 10,
+            order: 3,
+          },
+          {
+            title: 'Explain the difference between symmetric and asymmetric encryption',
+            type: 'short_answer',
+            description: 'In 2-3 sentences, explain the key difference between symmetric and asymmetric encryption.',
+            correctAnswer: 'symmetric uses same key for encryption and decryption while asymmetric uses different keys public and private',
+            points: 10,
+            order: 4,
+          },
+        ],
+      },
+    },
+  })
+  console.log('✅ Created Phase 1 Readiness Check assessment.\n')
+
+  // ----------------------------------------------------------
+  // PORTFOLIO: Auto-generate artifacts for demo user
+  // ----------------------------------------------------------
+  console.log('📁 Seeding portfolio artifacts for demo user...')
+
+  const demoUserForPortfolio = await db.user.findUnique({ where: { email: 'moe@zerotodev.dev' } })
+  if (demoUserForPortfolio) {
+    const firstLab = await db.hackingLab.findFirst({ orderBy: { order: 'asc' } })
+    if (firstLab) {
+      await db.portfolioArtifact.create({
+        data: {
+          userId: demoUserForPortfolio.id,
+          type: 'lab',
+          title: firstLab.title,
+          description: `Solved the ${firstLab.difficulty} ${firstLab.category} CTF challenge`,
+          sourceId: firstLab.id,
+          featured: true,
+        },
+      })
+    }
+    console.log('✅ Created portfolio artifacts for demo user.\n')
+  }
+
+  // ----------------------------------------------------------
   // SUMMARY
   // ----------------------------------------------------------
   console.log('═══════════════════════════════════════════════════')
