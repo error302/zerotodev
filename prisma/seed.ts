@@ -30,6 +30,11 @@ async function main() {
   await db.user.deleteMany()
   await db.phase.deleteMany()
   // New models
+  await db.userCertification.deleteMany()
+  await db.certificationProject.deleteMany()
+  await db.certification.deleteMany()
+  await db.userTrackProgress.deleteMany()
+  await db.languageTrack.deleteMany()
   await db.portfolioArtifact.deleteMany()
   await db.interviewAttempt.deleteMany()
   await db.interviewProblem.deleteMany()
@@ -98,6 +103,225 @@ async function main() {
   ])
 
   console.log(`✅ Created ${phases.length} phases.\n`)
+
+  // ----------------------------------------------------------
+  // 1.5. CREATE LANGUAGE TRACKS (like Exercism)
+  // ----------------------------------------------------------
+  console.log('🌍 Creating language tracks...')
+
+  const languageTracks = await Promise.all([
+    db.languageTrack.create({
+      data: {
+        slug: 'python',
+        name: 'Python',
+        description: 'The most versatile language. Used in web development, data science, AI/ML, automation, and more. Perfect for beginners and experts alike.',
+        icon: 'Code2',
+        color: '#3776AB',
+        difficulty: 'beginner',
+        order: 1,
+      },
+    }),
+    db.languageTrack.create({
+      data: {
+        slug: 'javascript',
+        name: 'JavaScript',
+        description: 'The language of the web. Build interactive websites, servers with Node.js, mobile apps with React Native, and desktop apps with Electron.',
+        icon: 'Globe',
+        color: '#F7DF1E',
+        difficulty: 'beginner',
+        order: 2,
+      },
+    }),
+    db.languageTrack.create({
+      data: {
+        slug: 'typescript',
+        name: 'TypeScript',
+        description: 'JavaScript with superpowers. Catch bugs before they happen with static typing. The industry standard for large-scale web applications.',
+        icon: 'Shield',
+        color: '#3178C6',
+        difficulty: 'intermediate',
+        order: 3,
+      },
+    }),
+    db.languageTrack.create({
+      data: {
+        slug: 'c',
+        name: 'C',
+        description: 'The foundation of modern computing. Understand memory, pointers, and how computers actually work. Essential for systems programming and embedded devices.',
+        icon: 'Terminal',
+        color: '#A8B9CC',
+        difficulty: 'intermediate',
+        order: 4,
+      },
+    }),
+    db.languageTrack.create({
+      data: {
+        slug: 'cpp',
+        name: 'C++',
+        description: 'High-performance computing. Game engines, operating systems, browsers, and trading systems. When speed matters, C++ delivers.',
+        icon: 'Server',
+        color: '#00599C',
+        difficulty: 'advanced',
+        order: 5,
+      },
+    }),
+    db.languageTrack.create({
+      data: {
+        slug: 'rust',
+        name: 'Rust',
+        description: 'Memory safety without garbage collection. The most loved language for 8+ years. Systems programming that prevents entire classes of bugs.',
+        icon: 'Lock',
+        color: '#DEA584',
+        difficulty: 'advanced',
+        order: 6,
+      },
+    }),
+    db.languageTrack.create({
+      data: {
+        slug: 'go',
+        name: 'Go',
+        description: 'Built by Google for the cloud era. Simple, fast, and perfect for microservices, APIs, and DevOps tools. Concurrency made easy.',
+        icon: 'Zap',
+        color: '#00ADD8',
+        difficulty: 'intermediate',
+        order: 7,
+      },
+    }),
+    db.languageTrack.create({
+      data: {
+        slug: 'java',
+        name: 'Java',
+        description: 'Enterprise powerhouse. Android apps, big data systems, and millions of servers. Write once, run anywhere.',
+        icon: 'Coffee',
+        color: '#ED8B00',
+        difficulty: 'intermediate',
+        order: 8,
+      },
+    }),
+    db.languageTrack.create({
+      data: {
+        slug: 'bash',
+        name: 'Bash/Shell',
+        description: 'Automate everything. System administration, CI/CD pipelines, and DevOps. The language that runs the internet.',
+        icon: 'Terminal',
+        color: '#4EAA25',
+        difficulty: 'beginner',
+        order: 9,
+      },
+    }),
+  ])
+
+  console.log(`✅ Created ${languageTracks.length} language tracks.\n`)
+
+  // ----------------------------------------------------------
+  // 1.6. CREATE CERTIFICATIONS (like freeCodeCamp)
+  // ----------------------------------------------------------
+  console.log('🏆 Creating certifications...')
+
+  const certifications = await Promise.all([
+    db.certification.create({
+      data: {
+        slug: 'python-foundations',
+        title: 'Python Foundations',
+        description: 'Master Python from variables to object-oriented programming. Build 5 real projects to earn this certification.',
+        icon: 'Code2',
+        requiredProjects: 5,
+        estimatedHours: 300,
+        order: 1,
+        projects: {
+          create: [
+            { title: 'Number Guessing Game', description: 'Build a CLI game where the computer picks a random number and the user guesses it with hints.', requirements: JSON.stringify(['Use random module', 'Handle invalid input', 'Track number of guesses', 'Allow replay']), language: 'python', order: 1 },
+            { title: 'To-Do List App', description: 'Create a command-line to-do list that saves tasks to a file.', requirements: JSON.stringify(['Add/remove/view tasks', 'Save to JSON file', 'Mark tasks as complete', 'Filter by status']), language: 'python', order: 2 },
+            { title: 'Web Scraper', description: 'Build a tool that scrapes a website and extracts all links.', requirements: JSON.stringify(['Use requests library', 'Parse HTML with BeautifulSoup', 'Handle errors gracefully', 'Save results to CSV']), language: 'python', order: 3 },
+            { title: 'REST API', description: 'Create a REST API for a blog using Flask or FastAPI.', requirements: JSON.stringify(['CRUD operations for posts', 'JSON responses', 'Error handling', 'Input validation']), language: 'python', order: 4 },
+            { title: 'Data Analysis Dashboard', description: 'Analyze a dataset and create visualizations.', requirements: JSON.stringify(['Use pandas for data manipulation', 'Create charts with matplotlib', 'Calculate statistics', 'Generate a report']), language: 'python', order: 5 },
+          ],
+        },
+      },
+    }),
+    db.certification.create({
+      data: {
+        slug: 'javascript-algorithms',
+        title: 'JavaScript Algorithms & Data Structures',
+        description: 'Learn algorithmic thinking by building solutions in JavaScript. Master arrays, objects, recursion, and more.',
+        icon: 'Globe',
+        requiredProjects: 5,
+        estimatedHours: 300,
+        order: 2,
+        projects: {
+          create: [
+            { title: 'Palindrome Checker', description: 'Check if a string is a palindrome, ignoring punctuation and case.', requirements: JSON.stringify(['Handle edge cases', 'Ignore non-alphanumeric chars', 'Case insensitive', 'Return boolean']), language: 'javascript', order: 1 },
+            { title: 'Roman Numeral Converter', description: 'Convert integers to Roman numerals.', requirements: JSON.stringify(['Handle 1-3999', 'Use proper Roman numeral rules', 'Handle edge cases', 'Return string']), language: 'javascript', order: 2 },
+            { title: 'Caesars Cipher', description: 'Implement the Caesar cipher encryption/decryption.', requirements: JSON.stringify(['Shift by 13 (ROT13)', 'Handle uppercase and lowercase', 'Leave non-letters unchanged', 'Return string']), language: 'javascript', order: 3 },
+            { title: 'Telephone Number Validator', description: 'Validate US phone numbers in various formats.', requirements: JSON.stringify(['Handle multiple formats', 'Check for valid area codes', 'Return boolean', 'Handle edge cases']), language: 'javascript', order: 4 },
+            { title: 'Cash Register', description: 'Calculate change due and determine which bills/coins to return.', requirements: JSON.stringify(['Calculate exact change', 'Handle insufficient funds', 'Return array of denominations', 'Handle edge cases']), language: 'javascript', order: 5 },
+          ],
+        },
+      },
+    }),
+    db.certification.create({
+      data: {
+        slug: 'cybersecurity-fundamentals',
+        title: 'Cybersecurity Fundamentals',
+        description: 'Learn to think like a hacker. Master the OWASP Top 10, network security, cryptography, and incident response.',
+        icon: 'Shield',
+        requiredProjects: 5,
+        estimatedHours: 300,
+        order: 3,
+        projects: {
+          create: [
+            { title: 'Password Strength Analyzer', description: 'Build a tool that analyzes password strength and provides feedback.', requirements: JSON.stringify(['Check length, complexity, patterns', 'Estimate crack time', 'Provide improvement suggestions', 'Return detailed report']), language: 'python', order: 1 },
+            { title: 'Network Port Scanner', description: 'Create a tool that scans a host for open ports.', requirements: JSON.stringify(['Scan common ports', 'Handle timeouts', 'Display results clearly', 'Support IP ranges']), language: 'python', order: 2 },
+            { title: 'SQL Injection Lab', description: 'Build a vulnerable app and demonstrate SQL injection attacks.', requirements: JSON.stringify(['Create vulnerable login', 'Demonstrate injection', 'Show the fix', 'Write a report']), language: 'python', order: 3 },
+            { title: 'Encryption Tool', description: 'Implement AES encryption/decryption for files.', requirements: JSON.stringify(['Use proper key management', 'Handle large files', 'Verify integrity', 'CLI interface']), language: 'python', order: 4 },
+            { title: 'Log Analyzer', description: 'Build a tool that analyzes server logs for suspicious activity.', requirements: JSON.stringify(['Parse log files', 'Detect patterns', 'Generate alerts', 'Create summary report']), language: 'python', order: 5 },
+          ],
+        },
+      },
+    }),
+    db.certification.create({
+      data: {
+        slug: 'ai-engineering',
+        title: 'AI Engineering',
+        description: 'Build AI applications from scratch. Master machine learning, neural networks, LLMs, and deployment.',
+        icon: 'Brain',
+        requiredProjects: 5,
+        estimatedHours: 400,
+        order: 4,
+        projects: {
+          create: [
+            { title: 'Linear Regression from Scratch', description: 'Implement linear regression without any ML libraries.', requirements: JSON.stringify(['Implement gradient descent', 'Calculate MSE', 'Handle multiple features', 'Visualize results']), language: 'python', order: 1 },
+            { title: 'Neural Network from Scratch', description: 'Build a neural network using only NumPy.', requirements: JSON.stringify(['Implement forward/backward pass', 'Use activation functions', 'Train on MNIST or similar', 'Achieve >90% accuracy']), language: 'python', order: 2 },
+            { title: 'Sentiment Analysis API', description: 'Build an API that analyzes text sentiment.', requirements: JSON.stringify(['Train or use pre-trained model', 'REST API endpoint', 'Handle batch requests', 'Return confidence scores']), language: 'python', order: 3 },
+            { title: 'RAG Chatbot', description: 'Build a Retrieval-Augmented Generation chatbot.', requirements: JSON.stringify(['Vector database for documents', 'LLM integration', 'Source citations', 'Handle follow-up questions']), language: 'python', order: 4 },
+            { title: 'AI Code Assistant', description: 'Build a tool that suggests code improvements.', requirements: JSON.stringify(['Parse code AST', 'Identify patterns', 'Suggest improvements', 'CLI or web interface']), language: 'python', order: 5 },
+          ],
+        },
+      },
+    }),
+    db.certification.create({
+      data: {
+        slug: 'systems-programming',
+        title: 'Systems Programming',
+        description: 'Master low-level programming in C, Rust, and Go. Build operating systems, compilers, and high-performance tools.',
+        icon: 'Server',
+        requiredProjects: 5,
+        estimatedHours: 400,
+        order: 5,
+        projects: {
+          create: [
+            { title: 'Custom Shell', description: 'Build a Unix shell that supports pipes, redirects, and background processes.', requirements: JSON.stringify(['Execute commands', 'Support pipes', 'Handle redirects', 'Background processes']), language: 'c', order: 1 },
+            { title: 'Memory Allocator', description: 'Implement malloc, free, and realloc from scratch.', requirements: JSON.stringify(['Handle fragmentation', 'Support different sizes', 'Thread safety', 'Benchmark against system malloc']), language: 'c', order: 2 },
+            { title: 'HTTP Server', description: 'Build an HTTP/1.1 server from raw sockets.', requirements: JSON.stringify(['Handle GET/POST', 'Serve static files', 'Support concurrent connections', 'Handle errors gracefully']), language: 'rust', order: 3 },
+            { title: 'Key-Value Store', description: 'Build a persistent key-value database.', requirements: JSON.stringify(['CRUD operations', 'Persistence to disk', 'Indexing', 'Concurrent access']), language: 'go', order: 4 },
+            { title: 'Simple Compiler', description: 'Write a compiler for a toy language.', requirements: JSON.stringify(['Lexer and parser', 'AST generation', 'Code generation', 'Run test programs']), language: 'rust', order: 5 },
+          ],
+        },
+      },
+    }),
+  ])
+
+  console.log(`✅ Created ${certifications.length} certifications.\n`)
 
   // ----------------------------------------------------------
   // 2. CREATE LESSONS, EXERCISES, HINTS & TEST CASES
@@ -4929,6 +5153,75 @@ def decode_chain(data, encodings):
     await db.interviewProblem.create({ data: p })
   }
   console.log(`✅ Created ${moreInterviewProblems.length} more interview problems.\n`)
+
+  // ----------------------------------------------------------
+  // AI/ML INTERVIEW PROBLEMS
+  // ----------------------------------------------------------
+  console.log('🤖 Seeding AI/ML interview problems...')
+
+  const aiMlProblems = [
+    {
+      title: 'Implement Gradient Descent',
+      slug: 'implement-gradient-descent',
+      difficulty: 'medium',
+      category: 'security',
+      pattern: 'optimization',
+      description: 'Implement gradient descent from scratch to find the minimum of f(x) = x^2.\n\nStart at x=5, learning rate=0.1, run for 20 iterations.\n\nReturn the final x value rounded to 4 decimal places.',
+      starterCode: 'def gradient_descent(start_x, learning_rate, iterations):\n    """\n    :type start_x: float\n    :type learning_rate: float\n    :type iterations: int\n    :rtype: float\n    """\n    x = start_x\n    # Your code here\n    return round(x, 4)',
+      language: 'python',
+      testCases: JSON.stringify([]),
+      hints: null,
+      solution: 'def gradient_descent(start_x, learning_rate, iterations):\n    x = start_x\n    for _ in range(iterations):\n        gradient = 2 * x  # derivative of x^2\n        x = x - learning_rate * gradient\n    return round(x, 4)',
+      xpReward: 75,
+    },
+    {
+      title: 'Build a Tokenizer',
+      slug: 'build-tokenizer',
+      difficulty: 'medium',
+      category: 'security',
+      pattern: 'string_processing',
+      description: 'Write a simple tokenizer that splits text into tokens, handling punctuation and whitespace.\n\nExample:\nInput: "Hello, world! How are you?"\nOutput: ["Hello", ",", "world", "!", "How", "are", "you", "?"]',
+      starterCode: 'def tokenize(text):\n    """\n    :type text: str\n    :rtype: List[str]\n    """\n    import re\n    pass',
+      language: 'python',
+      testCases: JSON.stringify([]),
+      hints: null,
+      solution: 'def tokenize(text):\n    import re\n    return re.findall(r"\w+|[^\w\s]", text)',
+      xpReward: 75,
+    },
+    {
+      title: 'Calculate TF-IDF',
+      slug: 'calculate-tf-idf',
+      difficulty: 'hard',
+      category: 'security',
+      pattern: 'nlp',
+      description: 'Implement Term Frequency-Inverse Document Frequency from scratch.\n\nGiven a list of documents (list of strings), calculate TF-IDF for each term in each document.',
+      starterCode: 'import math\nfrom collections import Counter\n\ndef calculate_tfidf(documents):\n    """\n    :type documents: List[str]\n    :rtype: List[Dict[str, float]]\n    """\n    pass',
+      language: 'python',
+      testCases: JSON.stringify([]),
+      hints: null,
+      solution: 'import math\nfrom collections import Counter\n\ndef calculate_tfidf(documents):\n    tokenized = [doc.lower().split() for doc in documents]\n    n_docs = len(documents)\n    doc_freq = Counter()\n    for doc in tokenized:\n        for term in set(doc):\n            doc_freq[term] += 1\n    result = []\n    for doc in tokenized:\n        tf = Counter(doc)\n        total_terms = len(doc)\n        tfidf = {}\n        for term, count in tf.items():\n            tf_val = count / total_terms\n            idf_val = math.log(n_docs / doc_freq[term])\n            tfidf[term] = tf_val * idf_val\n        result.append(tfidf)\n    return result',
+      xpReward: 100,
+    },
+    {
+      title: 'Implement Softmax',
+      slug: 'implement-softmax',
+      difficulty: 'medium',
+      category: 'security',
+      pattern: 'neural_networks',
+      description: 'Implement the softmax function for a list of numbers.\n\nSoftmax converts a vector of values into probabilities that sum to 1.\n\nFormula: softmax(x_i) = exp(x_i) / sum(exp(x_j) for all j)',
+      starterCode: 'import math\n\ndef softmax(values):\n    """\n    :type values: List[float]\n    :rtype: List[float]\n    """\n    pass',
+      language: 'python',
+      testCases: JSON.stringify([]),
+      hints: null,
+      solution: 'import math\n\ndef softmax(values):\n    exp_values = [math.exp(v - max(values)) for v in values]  # subtract max for numerical stability\n    sum_exp = sum(exp_values)\n    return [e / sum_exp for e in exp_values]',
+      xpReward: 75,
+    },
+  ]
+
+  for (const p of aiMlProblems) {
+    await db.interviewProblem.create({ data: p })
+  }
+  console.log(`✅ Created ${aiMlProblems.length} AI/ML interview problems.\n`)
 
   // ----------------------------------------------------------
   // PORTFOLIO: Auto-generate artifacts for demo user

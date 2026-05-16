@@ -11,6 +11,87 @@ datasource db {
 }
 
 // ============================================================
+// LANGUAGE TRACKS (like Exercism)
+// ============================================================
+
+model LanguageTrack {
+  id          String   @id @default(cuid())
+  slug        String   @unique // "python", "javascript", "rust", etc.
+  name        String
+  description String
+  icon        String   // lucide icon name
+  color       String   // hex color for the track
+  difficulty  String   @default("beginner") // "beginner" | "intermediate" | "advanced"
+  order       Int
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  lessons     Lesson[]
+  progress    UserTrackProgress[]
+}
+
+model UserTrackProgress {
+  id          String   @id @default(cuid())
+  userId      String
+  trackId     String
+  completed   Boolean  @default(false)
+  completedAt DateTime?
+  exercisesCompleted Int @default(0)
+  totalExercises     Int @default(0)
+
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  track       LanguageTrack @relation(fields: [trackId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, trackId])
+}
+
+// ============================================================
+// CERTIFICATIONS (like freeCodeCamp)
+// ============================================================
+
+model Certification {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String
+  icon        String
+  requiredProjects Int @default(5)
+  estimatedHours Int  @default(300)
+  order       Int
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  projects    CertificationProject[]
+  earned      UserCertification[]
+}
+
+model CertificationProject {
+  id              String   @id @default(cuid())
+  certificationId String
+  title           String
+  description     String
+  requirements    String   // JSON: list of requirements
+  starterCode     String?
+  language        String   @default("python")
+  order           Int
+
+  certification   Certification @relation(fields: [certificationId], references: [id], onDelete: Cascade)
+}
+
+model UserCertification {
+  id              String   @id @default(cuid())
+  userId          String
+  certificationId String
+  completedAt     DateTime @default(now())
+  projects        String   // JSON: list of completed project IDs
+
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  certification   Certification @relation(fields: [certificationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, certificationId])
+}
+
+// ============================================================
 // AUTH & USERS
 // ============================================================
 
@@ -25,6 +106,7 @@ model User {
   streak        Int      @default(0)
   lastActiveAt  DateTime @default(now())
   role          String   @default("student") // student, admin
+  primaryLanguage String @default("python")  // user's preferred learning language
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
@@ -38,6 +120,8 @@ model User {
   assessmentAttempts AssessmentAttempt[]
   interviewAttempts  InterviewAttempt[]
   portfolioArtifacts PortfolioArtifact[]
+  trackProgress    UserTrackProgress[]
+  certifications   UserCertification[]
 }
 
 model Account {
@@ -93,6 +177,7 @@ model Phase {
 model Lesson {
   id          String   @id @default(cuid())
   phaseId     String
+  trackId     String?
   title       String
   slug        String   @unique
   description String
@@ -104,6 +189,7 @@ model Lesson {
   updatedAt   DateTime @updatedAt
 
   phase       Phase    @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+  track       LanguageTrack? @relation(fields: [trackId], references: [id], onDelete: SetNull)
   exercises   Exercise[]
   progress    UserProgress[]
   projects    Project[]
