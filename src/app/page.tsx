@@ -23,6 +23,11 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { toast } from '@/hooks/use-toast'
 import { SkillRadar } from '@/components/skill-radar'
+import LessonRenderer from '@/components/mdx/LessonRenderer'
+import PortfolioPage from '@/components/portfolio/PortfolioPage'
+import AssessmentPage from '@/components/assessment/AssessmentPage'
+import InterviewPage from '@/components/interview/InterviewPage'
+import ExploitEditor from '@/components/exploit/ExploitEditor'
 
 // Lazy load Monaco editor (heavy)
 const MonacoEditor = dynamic(() => import('@monaco-editor/react').then(mod => mod.default), {
@@ -142,7 +147,7 @@ interface ProgressData {
   achievements: { slug: string; title: string; icon: string; unlockedAt: string }[]
 }
 
-type View = 'auth' | 'dashboard' | 'lessons' | 'lesson-detail' | 'labs' | 'lab-detail' | 'leaderboard' | 'profile'
+type View = 'auth' | 'dashboard' | 'lessons' | 'lesson-detail' | 'labs' | 'lab-detail' | 'leaderboard' | 'profile' | 'portfolio' | 'assessment' | 'interview' | 'exploit'
 
 // ============================================================
 // ICON MAP
@@ -189,6 +194,10 @@ export default function ZeroToDevApp() {
   const [userPhase, setUserPhase] = useState(1)
   const [userStreak, setUserStreak] = useState(0)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  // New feature state
+  const [currentAssessmentSlug, setCurrentAssessmentSlug] = useState<string>('')
+  const [exploitExercise, setExploitExercise] = useState<{ id: string; title: string; description: string; language: string; starterCode: string } | null>(null)
 
   // Editor state
   const [editorCode, setEditorCode] = useState('')
@@ -584,6 +593,8 @@ export default function ZeroToDevApp() {
                 { key: 'dashboard', label: 'Dashboard', icon: HomeIcon },
                 { key: 'lessons', label: 'Lessons', icon: BookOpen },
                 { key: 'labs', label: 'Hacking Labs', icon: Shield },
+                { key: 'interview', label: 'Interview', icon: Brain },
+                { key: 'portfolio', label: 'Portfolio', icon: Award },
                 { key: 'leaderboard', label: 'Leaderboard', icon: Trophy },
               ].map(({ key, label, icon: Icon }) => (
                 <button
@@ -636,6 +647,8 @@ export default function ZeroToDevApp() {
               { key: 'dashboard', label: 'Dashboard', icon: HomeIcon },
               { key: 'lessons', label: 'Lessons', icon: BookOpen },
               { key: 'labs', label: 'Hacking Labs', icon: Shield },
+              { key: 'interview', label: 'Interview', icon: Brain },
+              { key: 'portfolio', label: 'Portfolio', icon: Award },
               { key: 'leaderboard', label: 'Leaderboard', icon: Trophy },
             ].map(({ key, label, icon: Icon }) => (
               <button
@@ -930,11 +943,7 @@ export default function ZeroToDevApp() {
                     </div>
 
                     {/* Lesson MDX content */}
-                    <div className="prose prose-invert prose-sm max-w-none">
-                      <div className="text-sm text-muted-foreground whitespace-pre-wrap leading-relaxed bg-[#0d0d14] rounded-lg p-4 border border-border/30">
-                        {currentLesson.contentMdx}
-                      </div>
-                    </div>
+                    <LessonRenderer content={currentLesson.contentMdx} />
 
                     <Separator className="bg-border/30" />
 
@@ -990,15 +999,36 @@ export default function ZeroToDevApp() {
                     <Zap size={10} className="mr-1" /> {currentExercise?.xpReward || 0} XP
                   </Badge>
                 </div>
-                <Button
-                  onClick={handleRunCode}
-                  disabled={isRunning}
-                  size="sm"
-                  className="bg-emerald-500 hover:bg-emerald-600 text-white"
-                >
-                  {isRunning ? <Loader2 className="animate-spin mr-1" size={14} /> : <Play size={14} className="mr-1" />}
-                  Run Code
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button
+                    onClick={handleRunCode}
+                    disabled={isRunning}
+                    size="sm"
+                    className="bg-emerald-500 hover:bg-emerald-600 text-white"
+                  >
+                    {isRunning ? <Loader2 className="animate-spin mr-1" size={14} /> : <Play size={14} className="mr-1" />}
+                    Run Code
+                  </Button>
+                  {currentExercise && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setExploitExercise({
+                          id: currentExercise.id,
+                          title: currentExercise.title,
+                          description: currentExercise.description,
+                          language: currentExercise.language,
+                          starterCode: currentExercise.starterCode,
+                        })
+                        setView('exploit')
+                      }}
+                      className="text-red-400 border-red-500/30 hover:bg-red-500/10"
+                    >
+                      <Bug size={14} className="mr-1" /> Exploit
+                    </Button>
+                  )}
+                </div>
               </div>
 
               {/* Monaco Editor */}
@@ -1302,6 +1332,26 @@ export default function ZeroToDevApp() {
               </div>
             )}
           </div>
+        )}
+
+        {/* PORTFOLIO */}
+        {view === 'portfolio' && <PortfolioPage onNavigate={(v) => navigateTo(v as View)} />}
+
+        {/* INTERVIEW PREP */}
+        {view === 'interview' && <InterviewPage onNavigate={(v) => navigateTo(v as View)} />}
+
+        {/* ASSESSMENT */}
+        {view === 'assessment' && <AssessmentPage slug={currentAssessmentSlug} onNavigate={(v) => navigateTo(v as View)} />}
+
+        {/* EXPLOIT LAB */}
+        {view === 'exploit' && exploitExercise && (
+          <ExploitEditor
+            exerciseId={exploitExercise.id}
+            targetCode={exploitExercise.starterCode}
+            exerciseLanguage={exploitExercise.language}
+            exerciseTitle={exploitExercise.title}
+            description={exploitExercise.description}
+          />
         )}
       </main>
     </div>
