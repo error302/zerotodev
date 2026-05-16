@@ -30,25 +30,43 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files
 .env*
+!.env.example
 
 # vercel
 .vercel
-
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
 local-*
+
+# IDE / AI tools
 .claude
 .z-ai-config
-*.log
-dev.log
-dev.out.log
-test
-prompt
 
+# logs
+*.log
 server.log
-# Skills directory
+
+# Database
+/db/
+
+# Skills directory (internal)
 /skills/
+
+# Download directory (generated files)
+/download/
+
+# Upload directory
+/upload/
+
+# Agent context
+/agent-ctx/
+
+# Z scripts runtime
+.zscripts/dev.pid
+
+# Test artifacts
+test-screenshots.mjs
