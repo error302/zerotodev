@@ -65,6 +65,9 @@ server.log
 # Agent context
 /agent-ctx/
 
+# Superpowers brainstorm
+.superpowers/
+
 # Z scripts runtime
 .zscripts/dev.pid
 

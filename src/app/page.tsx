@@ -10,7 +10,8 @@ import {
   Github, ArrowRight, ChevronDown, Hash,
   Brain, Server, Lock as LockIcon, Bug, Search,
   Award, TrendingUp, Target, Users, Clock,
-  AlertTriangle, Sparkles, Menu, X, Home as HomeIcon, Flag, Globe
+  AlertTriangle, Sparkles, Menu, X, Home as HomeIcon, Flag, Globe,
+  Route,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -28,6 +29,9 @@ import PortfolioPage from '@/components/portfolio/PortfolioPage'
 import AssessmentPage from '@/components/assessment/AssessmentPage'
 import InterviewPage from '@/components/interview/InterviewPage'
 import ExploitEditor from '@/components/exploit/ExploitEditor'
+import { PathsPage } from '@/components/paths/PathsPage'
+import { TrackDetail } from '@/components/paths/TrackDetail'
+import { CertificationDetail } from '@/components/paths/CertificationDetail'
 
 // Lazy load Monaco editor (heavy)
 const MonacoEditor = dynamic(() => import('@monaco-editor/react').then(mod => mod.default), {
@@ -147,7 +151,7 @@ interface ProgressData {
   achievements: { slug: string; title: string; icon: string; unlockedAt: string }[]
 }
 
-type View = 'auth' | 'dashboard' | 'lessons' | 'lesson-detail' | 'labs' | 'lab-detail' | 'leaderboard' | 'profile' | 'portfolio' | 'assessment' | 'interview' | 'exploit'
+type View = 'auth' | 'dashboard' | 'lessons' | 'lesson-detail' | 'labs' | 'lab-detail' | 'leaderboard' | 'profile' | 'portfolio' | 'assessment' | 'interview' | 'exploit' | 'paths' | 'track-detail' | 'certification-detail'
 
 // ============================================================
 // ICON MAP
@@ -199,6 +203,8 @@ export default function ZeroToDevApp() {
   const [currentAssessmentSlug, setCurrentAssessmentSlug] = useState<string>('')
   const [exploitExercise, setExploitExercise] = useState<{ id: string; title: string; description: string; language: string; starterCode: string } | null>(null)
   const [assessments, setAssessments] = useState<Array<{ id: string; title: string; slug: string; description: string; phaseNumber: number; timeLimit: number; passScore: number; problemCount: number; attempt: { score: number | null; passed: boolean | null } | null }>>([])
+  const [selectedTrackSlug, setSelectedTrackSlug] = useState<string | null>(null)
+  const [selectedCertSlug, setSelectedCertSlug] = useState<string | null>(null)
 
   // Editor state
   const [editorCode, setEditorCode] = useState('')
@@ -467,6 +473,10 @@ export default function ZeroToDevApp() {
     if (newView === 'leaderboard') fetchLeaderboard()
     if (newView === 'labs') fetchLabs()
     if (newView === 'dashboard') fetchProgress()
+    if (newView === 'paths') {
+      setSelectedTrackSlug(null)
+      setSelectedCertSlug(null)
+    }
   }
 
   // ============================================================
@@ -604,7 +614,7 @@ export default function ZeroToDevApp() {
             <nav className="hidden md:flex items-center gap-1 ml-6">
               {[
                 { key: 'dashboard', label: 'Dashboard', icon: HomeIcon },
-                { key: 'lessons', label: 'Lessons', icon: BookOpen },
+                { key: 'paths', label: 'Paths', icon: Route },
                 { key: 'labs', label: 'Hacking Labs', icon: Shield },
                 { key: 'interview', label: 'Interview', icon: Brain },
                 { key: 'portfolio', label: 'Portfolio', icon: Award },
@@ -658,7 +668,7 @@ export default function ZeroToDevApp() {
           <div className="md:hidden border-t border-border/50 p-2">
             {[
               { key: 'dashboard', label: 'Dashboard', icon: HomeIcon },
-              { key: 'lessons', label: 'Lessons', icon: BookOpen },
+              { key: 'paths', label: 'Paths', icon: Route },
               { key: 'labs', label: 'Hacking Labs', icon: Shield },
               { key: 'interview', label: 'Interview', icon: Brain },
               { key: 'portfolio', label: 'Portfolio', icon: Award },
@@ -691,7 +701,7 @@ export default function ZeroToDevApp() {
                 <h1 className="text-2xl md:text-3xl font-bold text-white">Welcome back, {userName} 👋</h1>
                 <p className="text-muted-foreground mt-1">Continue your journey from zero to developer</p>
               </div>
-              <Button onClick={() => navigateTo('lessons')} className="bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white">
+              <Button onClick={() => navigateTo('paths')} className="bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white">
                 Continue Learning <ArrowRight size={16} className="ml-1" />
               </Button>
             </div>
@@ -779,11 +789,19 @@ export default function ZeroToDevApp() {
             )}
 
             {/* Quick Actions */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Card className="bg-[#111118] border-border/50 hover:border-emerald-500/30 transition-colors cursor-pointer" onClick={() => navigateTo('lessons')}>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+              <Card className="bg-[#111118] border-border/50 hover:border-emerald-500/30 transition-colors cursor-pointer" onClick={() => navigateTo('paths')}>
                 <CardContent className="p-6 flex items-center gap-4">
-                  <div className="p-3 rounded-xl bg-emerald-500/10"><BookOpen size={24} className="text-emerald-400" /></div>
-                  <div><h3 className="font-semibold text-white">Continue Lessons</h3><p className="text-sm text-muted-foreground">Pick up where you left off</p></div>
+                  <div className="p-3 rounded-xl bg-emerald-500/10"><Route size={24} className="text-emerald-400" /></div>
+                  <div><h3 className="font-semibold text-white">Language Tracks</h3><p className="text-sm text-muted-foreground">Learn Python, Rust, C, and more</p></div>
+                  <ChevronRight size={20} className="text-muted-foreground ml-auto" />
+                </CardContent>
+              </Card>
+
+              <Card className="bg-[#111118] border-border/50 hover:border-amber-500/30 transition-colors cursor-pointer" onClick={() => navigateTo('paths')}>
+                <CardContent className="p-6 flex items-center gap-4">
+                  <div className="p-3 rounded-xl bg-amber-500/10"><Award size={24} className="text-amber-400" /></div>
+                  <div><h3 className="font-semibold text-white">Certifications</h3><p className="text-sm text-muted-foreground">Earn project-based certifications</p></div>
                   <ChevronRight size={20} className="text-muted-foreground ml-auto" />
                 </CardContent>
               </Card>
@@ -950,6 +968,42 @@ export default function ZeroToDevApp() {
               )
             })}
           </div>
+        )}
+
+        {/* ============================================================ */}
+        {/* PATHS (Language Tracks & Certifications) */}
+        {/* ============================================================ */}
+        {view === 'paths' && (
+          <PathsPage
+            onNavigate={(v) => navigateTo(v as View)}
+            onSelectTrack={(slug) => {
+              setSelectedTrackSlug(slug)
+              setView('track-detail')
+            }}
+            onSelectCertification={(slug) => {
+              setSelectedCertSlug(slug)
+              setView('certification-detail')
+            }}
+          />
+        )}
+
+        {view === 'track-detail' && selectedTrackSlug && (
+          <TrackDetail
+            slug={selectedTrackSlug}
+            onNavigate={(v) => navigateTo(v as View)}
+            onBack={() => navigateTo('paths')}
+            onOpenLesson={(lessonSlug) => {
+              fetchLessonDetail(lessonSlug)
+            }}
+          />
+        )}
+
+        {view === 'certification-detail' && selectedCertSlug && (
+          <CertificationDetail
+            slug={selectedCertSlug}
+            onNavigate={(v) => navigateTo(v as View)}
+            onBack={() => navigateTo('paths')}
+          />
         )}
 
         {/* ============================================================ */}
